@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CSS 心电动画</title>
+  <title>登陆页</title>
+  <link rel="icon" type="image/png" href="static/zhuogongying/club-logo.png">
   <style>
     :root {
       --font-family-base:
@@ -17,6 +18,7 @@
       --band-height: 11.111vh;
       /* 波形连续衔接，避免滚动过程中出现大面积空白 */
       --beat-gap: 0px;
+      --edge-shift: calc(17vh - 8px);
     }
 
     * { box-sizing: border-box; }
@@ -100,6 +102,62 @@
 
     .hero-intro { text-align: center; }
 
+    .hero-intro,
+    .ecg-window,
+    .choice-actions {
+      transition: transform .8s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .ecg-stage.stage--moved .hero-intro {
+      transform: translateY(calc(-1 * var(--edge-shift)));
+    }
+
+    .ecg-stage.stage--moved .ecg-window,
+    .ecg-stage.stage--moved .choice-actions {
+      transform: translateY(var(--edge-shift));
+    }
+
+    .login-fields {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 50%;
+      width: min(360px, 72vw);
+      display: grid;
+      gap: 22px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -42%);
+      transition: opacity .65s ease, transform .8s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .ecg-stage.stage--moved .login-fields {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%);
+    }
+
+    .login-line {
+      width: 100%;
+      padding: 8px 2px 10px;
+      border: 0;
+      border-bottom: 1px solid #b5b5b5;
+      border-radius: 0;
+      outline: none;
+      background: transparent;
+      color: var(--color-text-heading);
+      font: 400 17px/1.4 var(--font-family-base);
+      transition: border-color .2s ease, color .2s ease;
+    }
+
+    .login-line::placeholder { color: #b5b5b5; opacity: 1; }
+
+    .login-line:focus,
+    .login-line:not(:placeholder-shown) {
+      border-bottom-color: var(--color-border-strong);
+      color: var(--color-text-heading);
+    }
+
     .hero-kicker {
       margin: 0 0 14px;
       color: var(--color-primary);
@@ -147,6 +205,12 @@
     }
 
     .choice-button:nth-child(2) { animation-delay: -1.5s; }
+
+    .choice-button.is-selected {
+      color: #fff;
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
 
     .choice-button:hover,
     .choice-button:focus-visible {
@@ -223,6 +287,10 @@
       <h1 class="hero-title">医工卓工营</h1>
       <p class="hero-subtitle">连接医学与工程，开启实践学习</p>
     </div>
+    <form class="login-fields" aria-label="登录信息">
+      <input class="login-line" type="text" autocomplete="username" placeholder="账号">
+      <input class="login-line" type="password" autocomplete="current-password" placeholder="密码">
+    </form>
     <div class="ecg-window">
       <div class="ecg-track">
         <!-- 两个心电图形之间的间距 = 动画高度的 16 倍 -->
@@ -239,9 +307,35 @@
       </div>
     </div>
     <nav class="choice-actions" aria-label="身份选择">
-      <button class="choice-button" type="button">我是学生</button>
-      <button class="choice-button" type="button">我是管理员</button>
+      <button class="choice-button" type="button" data-mode="student" data-label="我是学生" data-active-label="学生登录" data-target="https://www.bilibili.com/">我是学生</button>
+      <button class="choice-button" type="button" data-mode="admin" data-label="我是管理员" data-active-label="管理员登录" data-target="https://www.douyin.com/">我是管理员</button>
     </nav>
   </main>
+  <script>
+    document.querySelectorAll('.choice-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        const stage = document.querySelector('.ecg-stage');
+        const fields = stage.querySelectorAll('.login-line');
+        const selected = button.classList.contains('is-selected');
+        const isStudent = button.dataset.mode === 'student';
+
+        if (selected) {
+          window.location.href = button.dataset.target;
+          return;
+        }
+
+        document.querySelectorAll('.choice-button').forEach((item) => {
+          item.classList.remove('is-selected');
+          item.textContent = item.dataset.label;
+        });
+
+        button.classList.add('is-selected');
+        button.textContent = button.dataset.activeLabel;
+        fields[0].placeholder = isStudent ? '学生账号' : '管理员账号';
+        fields[1].placeholder = '密码';
+        stage.classList.add('stage--moved');
+      });
+    });
+  </script>
 </body>
 </html>

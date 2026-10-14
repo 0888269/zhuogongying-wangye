@@ -1,0 +1,57 @@
+/* ==========================================================================
+   1. 日间模式：当前网页样式总结
+   以下变量用于归纳现有样式，原网页尚未统一为变量配置。
+   不包含照片和 Logo 内部的颜色。
+   ========================================================================== */
+:root {
+  /* 字体：中文使用系统可用的后备字体 */
+  --font-family-base:
+    'Inter', -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', sans-serif;
+
+  /* 色彩 */
+  --color-primary: #e4312b;         /* 瑞士红：栏目标签、正文及课程编号 */
+  --color-bg-main: #ffffff;        /* 页面背景 */
+  --color-bg-section: #f1f1f1;     /* 管理平台信息区背景 */
+
+  --color-text-heading: #000000;   /* 主标题、管理平台标题 */
+  --color-text-main: #171717;      /* 管理平台正文 */
+  --color-text-list: #111111;      /* 课程列表文字 */
+  --color-text-secondary: #7a7a7a; /* 首页副标题 */
+  --color-text-muted: #b5b5b5;     /* 页底寄语 */
+
+  --color-border-strong: #111111;  /* 正文分隔线、课程列表顶线 */
+  --color-border-section: #000000;/* 分栏边界 */
+  --color-border-list: #bdbdbd;    /* 课程列表分隔线 */
+  --color-border-button: #dcdcdc; /* 次要按钮边框 */
+  --color-border-footer: #eeeeee; /* 页底点状分隔线 */
+
+  /* 按钮 */
+  --color-button-primary-bg: #000000;
+  --color-button-primary-text: #ffffff;
+  --color-button-secondary-bg: #ffffff;
+  --color-button-secondary-text: #000000;
+
+  /* 文本选中效果 */
+  --color-selection-bg: #0a84ff;
+  --color-selection-text: #ffffff;
+
+  /* 圆角：现有按钮为胶囊形，其余主要内容为直角 */
+  --radius-button: 999px;
+
+  /* 桌面端字号 */
+  --font-label: 11px;             /* 栏目标签、编号 */
+  --font-caption: 12px;           /* 页底寄语 */
+  --font-button: 15px;            /* 按钮 */
+  --font-list: 15px;              /* 课程列表 */
+  --font-body: 17px;              /* 管理平台正文 */
+  --font-subtitle: 28px;          /* 首页副标题 */
+  --font-brand: 30px;             /* 页脚品牌名称 */
+  --font-section-title: clamp(32px, 3.25vw, 54px);
+  --font-hero-title: 72px;         /* 首页主标题 */
+
+  /* 字重 */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+}
