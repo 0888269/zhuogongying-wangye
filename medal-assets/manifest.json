@@ -1,0 +1,70 @@
+{
+  "icons": {
+    "circuit": {
+      "image": "medal-circuit-d3d42529a771.webp",
+      "mask": "mount-9ff1577e49a7.png"
+    },
+    "code": {
+      "image": "medal-code-07b98a0d9b07.webp",
+      "mask": "mount-1642534719ca.png"
+    },
+    "chip": {
+      "image": "medal-chip-3fae7b3869a5.webp",
+      "mask": "mount-9ff1577e49a7.png"
+    },
+    "signal": {
+      "image": "medal-signal-c6598860958a.webp",
+      "mask": "mount-1642534719ca.png"
+    },
+    "exam": {
+      "image": "medal-exam-6080e8e1cc3a.webp",
+      "mask": "mount-c1ed446df03f.png"
+    },
+    "project": {
+      "image": "medal-project-34215bef34a4.webp",
+      "mask": "mount-c1ed446df03f.png"
+    },
+    "spark": {
+      "image": "medal-spark-3f5fa866e2e1.webp",
+      "mask": "mount-c1ed446df03f.png"
+    },
+    "search": {
+      "image": "medal-search-db9aaf37f5e3.webp",
+      "mask": "mount-9ff1577e49a7.png"
+    },
+    "design": {
+      "image": "medal-design-f85f4ef5a32b.webp",
+      "mask": "mount-1642534719ca.png"
+    },
+    "shield": {
+      "image": "medal-shield-40f95a6e81f3.webp",
+      "mask": "mount-c1ed446df03f.png"
+    },
+    "medical": {
+      "image": "medal-medical-df58e728fe74.webp",
+      "mask": "mount-9ff1577e49a7.png"
+    },
+    "team": {
+      "image": "medal-team-4f67d8128786.webp",
+      "mask": "mount-1642534719ca.png"
+    }
+  },
+  "ranks": {
+    "I": {
+      "image": "medal-i-1dae11d9186d.webp",
+      "mask": "mount-9ff1577e49a7.png"
+    },
+    "II": {
+      "image": "medal-ii-88565697455f.webp",
+      "mask": "mount-1642534719ca.png"
+    },
+    "III": {
+      "image": "medal-iii-fe507af1c65a.webp",
+      "mask": "mount-c1ed446df03f.png"
+    },
+    "IV": {
+      "image": "medal-iv-cc5681233c31.webp",
+      "mask": "mount-c1ed446df03f.png"
+    }
+  }
+}

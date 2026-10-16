@@ -10,11 +10,11 @@
       --font-family-base:
         'Inter', -apple-system, BlinkMacSystemFont,
         'Helvetica Neue', sans-serif;
-      --color-primary: #e4312b;
+      --color-primary: #1463FF;
       --color-bg-main: #ffffff;
       --color-text-heading: #000000;
       --color-border-strong: #111111;
-      --ecg-red: var(--color-primary);
+      --ecg-red: #1463FF;
       --band-height: 11.111vh;
       /* 波形连续衔接，避免滚动过程中出现大面积空白 */
       --beat-gap: 0px;
@@ -218,7 +218,7 @@
       color: #fff;
       background: var(--color-primary);
       border-color: var(--color-primary);
-      box-shadow: 0 8px 24px rgba(228, 49, 43, .22);
+      box-shadow: 0 8px 24px rgba(20, 99, 255, .22);
       transform: translateY(-4px);
     }
 
@@ -307,35 +307,70 @@
       </div>
     </div>
     <nav class="choice-actions" aria-label="身份选择">
-      <button class="choice-button" type="button" data-mode="student" data-label="我是学生" data-active-label="学生登录" data-target="https://www.bilibili.com/">我是学生</button>
-      <button class="choice-button" type="button" data-mode="admin" data-label="我是管理员" data-active-label="管理员登录" data-target="https://www.douyin.com/">我是管理员</button>
+      <button class="choice-button" type="button" data-mode="student" data-label="我是学生" data-active-label="学生登录" data-target="./mingpian.html?role=student">我是学生</button>
+      <button class="choice-button" type="button" data-mode="admin" data-label="我是管理员" data-active-label="管理员登录" data-target="./mingpian.html?role=admin">我是管理员</button>
     </nav>
   </main>
   <script>
+    const credentials = {
+      student: { user1: '123456', user2: '123456' },
+      admin: { admin: 'password123' }
+    };
+
+    let selectedMode = null;
+    const stage = document.querySelector('.ecg-stage');
+    const fields = stage.querySelectorAll('.login-line');
+
     document.querySelectorAll('.choice-button').forEach((button) => {
       button.addEventListener('click', () => {
-        const stage = document.querySelector('.ecg-stage');
-        const fields = stage.querySelectorAll('.login-line');
-        const selected = button.classList.contains('is-selected');
-        const isStudent = button.dataset.mode === 'student';
+        const isSelected = button.classList.contains('is-selected');
+        const mode = button.dataset.mode;
 
-        if (selected) {
-          window.location.href = button.dataset.target;
+        if (!isSelected) {
+          selectedMode = mode;
+          document.querySelectorAll('.choice-button').forEach((item) => {
+            item.classList.remove('is-selected');
+            item.textContent = item.dataset.label;
+          });
+          button.classList.add('is-selected');
+          button.textContent = button.dataset.activeLabel;
+          fields[0].value = '';
+          fields[1].value = '';
+          fields[0].placeholder = mode === 'student' ? '学生账号' : '管理员账号';
+          fields[1].placeholder = '密码';
+          stage.classList.add('stage--moved');
+          fields[0].focus();
           return;
         }
 
-        document.querySelectorAll('.choice-button').forEach((item) => {
-          item.classList.remove('is-selected');
-          item.textContent = item.dataset.label;
-        });
+        const username = fields[0].value.trim();
+        const password = fields[1].value;
+        const allowed = credentials[mode] || {};
 
-        button.classList.add('is-selected');
-        button.textContent = button.dataset.activeLabel;
-        fields[0].placeholder = isStudent ? '学生账号' : '管理员账号';
-        fields[1].placeholder = '密码';
-        stage.classList.add('stage--moved');
+        if (!username || !password) {
+          fields[0].focus();
+          return;
+        }
+        if (!Object.prototype.hasOwnProperty.call(allowed, username) || allowed[username] !== password) {
+          fields[1].setCustomValidity(mode === 'student'
+            ? '学生账号或密码错误'
+            : '管理员账号或密码错误');
+          fields[1].reportValidity();
+          fields[1].setCustomValidity('');
+          return;
+        }
+
+        // 仅允许已选身份对应的账号进入对应入口。
+        window.location.href = `${button.dataset.target}&user=${encodeURIComponent(username)}`;
       });
     });
+
+    fields.forEach((field) => field.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && selectedMode) {
+        event.preventDefault();
+        document.querySelector(`.choice-button[data-mode="${selectedMode}"]`).click();
+      }
+    }));
   </script>
 </body>
 </html>

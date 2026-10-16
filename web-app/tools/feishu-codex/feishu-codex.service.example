@@ -1,0 +1,17 @@
+[Unit]
+Description=Personal Feishu Codex bridge
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+# Replace these paths with the actual paths on the server.
+WorkingDirectory=/home/codex/feishu-codex
+ExecStart=/usr/bin/node /home/codex/feishu-codex/src/main.mjs
+Environment=FEISHU_CODEX_HOME=/home/codex/.local/share/FeishuCodexBridge
+Restart=on-failure
+RestartSec=10
+UMask=0077
+
+[Install]
+WantedBy=default.target

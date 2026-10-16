@@ -1,0 +1,8 @@
+{
+  "appId": "cli_REPLACE_ME",
+  "appSecret": "REPLACE_LOCALLY_DO_NOT_COMMIT",
+  "domain": "feishu",
+  "codexPath": "codex",
+  "defaultProject": "website",
+  "projects": { "website": "/srv/projects/website" }
+}

@@ -1,0 +1,15 @@
+{
+  "restore": {
+    "paintReadyMs": 81,
+    "longTasks": [],
+    "gpuContexts": 0,
+    "viewerLoaded": false
+  },
+  "expand": {
+    "paintReadyMs": 20,
+    "count": 55,
+    "longTasks": [],
+    "gpuContexts": 0,
+    "viewerLoaded": false
+  }
+}

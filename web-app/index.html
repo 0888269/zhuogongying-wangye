@@ -1,0 +1,3085 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医工名片 · 本地演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a192f;
+            color: #8892b0;
+            background-image: 
+                linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)),
+                repeating-linear-gradient(0deg, transparent, transparent 24px, rgba(100, 100, 100, 0.05) 25px),
+                repeating-linear-gradient(90deg, transparent, transparent 24px, rgba(100, 100, 100, 0.05) 25px);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #ffd700;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #8892b0;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 10px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background-color: #ffd700;
+            color: #0a192f;
+            font-weight: bold;
+        }
+        
+        .tab.inactive {
+            background-color: rgba(136, 146, 176, 0.2);
+            color: #8892b0;
+        }
+        
+        .tab.hidden {
+            display: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .card {
+            background-color: rgba(136, 146, 176, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .card h2 {
+            color: #ffd700;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .card-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        .card-item i {
+            color: #ffd700;
+        }
+        
+        .card-item a {
+            color: #8892b0;
+            text-decoration: none;
+        }
+        
+        .card-item a:hover {
+            color: #ffd700;
+        }
+        
+        .quote {
+            font-style: italic;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(136, 146, 176, 0.3);
+        }
+        
+        .lark-section {
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .lark-section h2 {
+            color: #3b82f6;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .lark-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .lark-button {
+            flex: 1;
+            padding: 10px;
+            background-color: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 5px;
+            color: #3b82f6;
+            text-align: left;
+        }
+        
+        .lark-button i {
+            float: right;
+        }
+        
+        .lark-link {
+            display: block;
+            padding: 10px;
+            background-color: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 5px;
+            color: #3b82f6;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .action-button {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .badge-section {
+            text-align: left;
+        }
+        
+        .completion {
+            background-color: rgba(136, 146, 176, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .badges {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .badge {
+            background-color: rgba(136, 146, 176, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .badge.locked {
+            background-color: rgba(50, 50, 50, 0.3);
+            border: 1px solid rgba(136, 146, 176, 0.3);
+        }
+        
+        .badge i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .badge.locked i {
+            color: #666;
+        }
+        
+        .badge h3 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .badge.locked h3 {
+            color: #666;
+        }
+        
+        .badge p {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .badge.locked p {
+            color: #333;
+        }
+        
+        .badges-toggle {
+            text-align: center;
+            margin-top: 10px;
+            padding: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .badges-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .badges-toggle i {
+            transition: transform 0.3s ease;
+        }
+        
+        .badges-toggle.expanded i {
+            transform: rotate(180deg);
+        }
+        
+        .nfc-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .nfc-link {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .sidebar {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .sidebar-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: #8892b0;
+        }
+        
+        /* 登录界面样式 */
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background-color: rgba(136, 146, 176, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .login-container h2 {
+            color: #ffd700;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #8892b0;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .login-button {
+            background-color: #ffd700;
+            color: #0a192f;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-button:hover {
+            background-color: #ffed4e;
+            transform: translateY(-2px);
+        }
+        
+        .login-error {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            border-radius: 5px;
+            padding: 8px 16px;
+            color: #8892b0;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .logout-button:hover {
+            background-color: rgba(136, 146, 176, 0.3);
+        }
+        
+        /* 管理员界面样式 */
+        .user-item {
+            background-color: rgba(136, 146, 176, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info h3 {
+            color: #ffd700;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            color: #8892b0;
+            font-size: 14px;
+        }
+        
+        .edit-user-btn {
+            background-color: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 5px;
+            padding: 8px 16px;
+            color: #3b82f6;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-user-btn:hover {
+            background-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .add-user-btn {
+            background-color: rgba(72, 187, 120, 0.2);
+            border: 1px solid rgba(72, 187, 120, 0.4);
+            border-radius: 5px;
+            padding: 10px 20px;
+            color: #48bb78;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .add-user-btn:hover {
+            background-color: rgba(72, 187, 120, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .delete-user-btn {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 5px;
+            padding: 8px 16px;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-user-btn:hover {
+            background-color: rgba(239, 68, 68, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .new-user-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .new-user-form textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .new-user-form textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .new-user-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .save-user-btn {
+            background-color: rgba(72, 187, 120, 0.2);
+            border: 1px solid rgba(72, 187, 120, 0.4);
+            border-radius: 5px;
+            padding: 10px 20px;
+            color: #48bb78;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .save-user-btn:hover {
+            background-color: rgba(72, 187, 120, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .cancel-user-btn {
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            border-radius: 5px;
+            padding: 10px 20px;
+            color: #8892b0;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .cancel-user-btn:hover {
+            background-color: rgba(136, 146, 176, 0.3);
+        }
+        
+        .edit-badge-item {
+            background-color: rgba(136, 146, 176, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .badge-edit-info {
+            flex: 1;
+        }
+        
+        .badge-edit-info h4 {
+            color: #ffd700;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .badge-edit-info p {
+            color: #8892b0;
+            font-size: 12px;
+        }
+        
+        .badge-edit-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .badge-action-btn {
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            border-radius: 5px;
+            padding: 5px 10px;
+            color: #8892b0;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .badge-action-btn:hover {
+            background-color: rgba(136, 146, 176, 0.3);
+        }
+        
+        .badge-action-btn.unlock {
+            background-color: rgba(72, 187, 120, 0.2);
+            border: 1px solid rgba(72, 187, 120, 0.4);
+            color: #48bb78;
+        }
+        
+        .badge-action-btn.unlock:hover {
+            background-color: rgba(72, 187, 120, 0.3);
+        }
+        
+        .badge-action-btn.lock {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+        
+        .badge-action-btn.lock:hover {
+            background-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .badge-action-btn.delete {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+        
+        .badge-action-btn.delete:hover {
+            background-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .add-badge-btn, .save-badges-btn, .cancel-edit-btn {
+            background-color: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 5px;
+            padding: 10px 20px;
+            color: #ffd700;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .add-badge-btn:hover, .save-badges-btn:hover {
+            background-color: rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .cancel-edit-btn {
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            color: #8892b0;
+        }
+        
+        .cancel-edit-btn:hover {
+            background-color: rgba(136, 146, 176, 0.3);
+        }
+        
+        .edit-badges-actions {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .new-badge-form {
+            background-color: rgba(136, 146, 176, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .new-badge-form input {
+            width: 100%;
+            padding: 8px;
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .new-badge-form input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .new-badge-form select {
+            width: 100%;
+            padding: 8px;
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .new-badge-form select:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .new-badge-form button {
+            background-color: rgba(72, 187, 120, 0.2);
+            border: 1px solid rgba(72, 187, 120, 0.4);
+            border-radius: 5px;
+            padding: 8px 16px;
+            color: #48bb78;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .new-badge-form button:hover {
+            background-color: rgba(72, 187, 120, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .new-badge-form .cancel-new-badge {
+            background-color: rgba(136, 146, 176, 0.2);
+            border: 1px solid rgba(136, 146, 176, 0.4);
+            color: #8892b0;
+            margin-left: 10px;
+        }
+        
+        .new-badge-form .cancel-new-badge:hover {
+            background-color: rgba(136, 146, 176, 0.3);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./contact.css"><script src="./contact-ui.js"></script><script src="./collaboration-ui.js"></script>
+<script src="./ui.js"></script>
+<link rel="icon" type="image/png" href="./club-logo.png">
+<link rel="stylesheet" href="./growth.css">
+<script src="./growth-catalog.js"></script>
+<script src="./api-client.js"></script>
+<script src="./medal-art.js"></script>
+<script src="./title-picker.js"></script>
+<script src="./member-import.js"></script>
+<script src="./member-import-ui.js"></script>
+<script src="./growth-ui.js"></script>
+<link rel="stylesheet" href="./cabinet.css">
+<script defer src="./badge-cabinet.js"></script>
+</head>
+<body class="account-page">
+    <main id="login-container" class="login-container">
+        <section class="login-story" aria-label="医工名片介绍">
+            <a class="brand" href="./"><img class="club-logo" src="./club-logo.png" alt="医工融合卓越工程师协会标志"><span>医工名片</span></a>
+            <div class="story-content"><span class="eyebrow">CONNECT THROUGH IDEAS</span>
+            <h2>让每一次相遇，<br>成为新的<span>可能。</span></h2>
+            <p>一张名片，连接你的专业、热爱与成长。<br>让志同道合的人，更好地认识你。</p>
+            <div class="identity-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="identity-card"><span class="mini-mark"><img class="club-logo" src="./club-logo.png" alt=""></span><span class="mini-chip">NFC</span><div class="mini-avatar">✳</div><div class="mini-line"></div><div class="mini-line short"></div><div class="mini-footer">YOUR NEXT CONNECTION ↗</div></div><span class="art-caption">灵感相遇 · 医工同行</span></div>
+            </div><p class="story-footer">深圳大学医工融合卓越工程师协会</p>
+        </section>
+        <section class="login-panel">
+            <span class="eyebrow">YOUR PERSONAL SPACE</span><h2>欢迎回来</h2>
+            <p class="login-description">登录，继续完善你的个人名片。</p>
+            <form class="login-form" id="login-form">
+                <div class="form-group"><label for="username">用户名</label><input type="text" id="username" name="username" autocomplete="username" required maxlength="100" placeholder="输入你的用户名"></div>
+                <div class="form-group"><label for="password">密码</label><div class="password-field"><input type="password" id="password" name="password" autocomplete="current-password" required maxlength="256" placeholder="输入你的密码"><button type="button" id="toggle-password" aria-label="显示密码" aria-pressed="false">显示</button></div></div>
+                <p id="caps-lock" class="caps-lock hidden">大写锁定已开启</p>
+                <button class="login-button" id="login-button" type="submit">登录 <span aria-hidden="true">↗</span></button>
+                <div class="login-error" id="login-error" role="alert" aria-live="polite"></div>
+            </form>
+            <p class="login-help">还没有账号？请联系协会管理员开通。</p>
+            <div class="login-note"><span aria-hidden="true">◈</span> 你的专业故事，从这里开始。</div>
+        </section>
+    </main>
+
+    <!-- 主界面 -->
+    <div id="main-container" class="container hidden">
+        <header class="account-nav">
+            <a class="brand" href="./"><img class="club-logo" src="./club-logo.png" alt="医工融合卓越工程师协会标志"><span>医工名片</span></a>
+            <span class="account-nav-label">个人中心</span>
+            <button class="logout-button" id="logout-button"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> 退出登录</button>
+        </header>
+        <section class="member-hero" aria-label="个人名片概览">
+            <div class="member-identity">
+                <img src="./avatar.svg" alt="用户头像" class="profile-img">
+                <div class="member-heading"><span class="eyebrow">MY CLUB PROFILE</span><h1>我的名片</h1><p id="hero-title">完善你的个人介绍</p><p class="subtitle">深圳大学医工融合卓越工程师协会</p></div>
+            </div>
+            <div class="hero-stat"><span class="hero-stat-label">已点亮徽章</span><strong id="hero-badge-count">0 <small>/ 0</small></strong><span id="member-growth-rank">成长起点</span></div>
+        </section>
+        <section id="growth-preview" class="growth-preview"><div><span class="section-kicker">成长记录</span><strong>成长起点</strong><p class="growth-preview-copy">从每一个小任务开始</p></div><button type="button" id="open-growth-route" class="secondary-button">继续成长 →</button></section>
+        <div class="account-toolbar">
+            <div class="sidebar" style="display:none;">
+                <button type="button" class="sidebar-btn" id="sidebar-edit-btn"><i class="fas fa-pen" aria-hidden="true"></i> 编辑资料</button>
+                <button type="button" class="sidebar-btn" id="sidebar-password-btn"><i class="fas fa-key" aria-hidden="true"></i> 修改密码</button>
+            </div>
+            <div class="share-actions"><button type="button" class="secondary-button" id="preview-profile-btn">查看公开名片 ↗</button><button type="button" class="primary-button" id="copy-profile-link-btn">复制名片链接</button></div>
+        </div>
+        <div class="tabs">
+            <div class="tab active" id="tab-card">
+                <i class="fas fa-id-card"></i> 名片
+            </div>
+            <div class="tab inactive" id="tab-growth"><i class="fas fa-route" aria-hidden="true"></i> 成长路线</div>
+            <div class="tab inactive" id="tab-badges">
+                <i class="fas fa-award"></i> 卓越图鉴
+            </div>
+            <div class="tab inactive hidden" id="tab-admin">
+                <i class="fas fa-cog"></i> 管理员
+            </div>
+        </div>
+        
+        <div id="card-section">
+            <div class="card">
+                <h2><i class="fas fa-user-tie"></i> 嵌入式硬件工程师</h2>
+                <p>深圳大学医工融合卓越工程师协会</p>
+                <div class="card-item" id="student-id-item" style="display:none;">
+                    <i class="fas fa-id-badge"></i>
+                    <span id="student-id-display"></span>
+                </div>
+                <div class="card-item hidden" id="gender-item"><i class="fas fa-user" aria-hidden="true"></i><span id="gender-display"></span></div>
+                <div class="card-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>生物医学工程 (2022级)</span>
+                </div>
+                <div class="card-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:lin.eng@szu.edu.cn">lin.eng@szu.edu.cn</a>
+                </div>
+                <div class="card-item">
+                    <i class="fab fa-github"></i>
+                    <a href="https://github.com/med-eng-dev" target="_blank">github.com/med-eng-dev</a>
+                </div>
+                <p class="quote">"致力于医疗器械小型化与可穿戴设备的创新设计。PCB Artist & Code Poet."</p>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-user"></i> 个人简介</h2>
+                <p>热衷于探索医工交叉领域的前沿技术，专注于生物医学信号处理与嵌入式系统设计。曾参与多项国家级大学生创新训练项目，擅长PCB设计与3D建模。希望通过技术创新解决临床实际痛点，做一名有温度的工程师。</p>
+            </div>
+            
+            <section id="account-contact-tools"></section><section id="account-collaboration"></section>
+            <section class="share-guide">
+                <div class="share-guide-icon" aria-hidden="true">↗</div><div><span class="section-kicker">YOUR DIGITAL CARD</span><h2>让新的连接，从你的名片开始</h2><p>公开名片展示你的介绍与图鉴。更新资料后，已分享的名片链接也会同步更新。</p></div>
+            </section>
+            <div class="lark-section" id="lark-section">
+                <h2><i class="fas fa-feather"></i> 飞书协同空间</h2>
+                <div style="text-align: right; margin-bottom: 10px;">
+                    <span id="feishu-bind-status" style="background-color: #3b82f6; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px;">未绑定</span>
+                </div>
+                <!-- 飞书名片卡片（内嵌展示） -->
+                <div id="feishu-card-container" class="hidden" style="margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; padding: 12px; border-radius: 12px; background: linear-gradient(135deg, #e8f0fe 0%, #f0e6ff 100%);">
+                        <img id="feishu-card-avatar" src="" alt="" style="width: 48px; height: 48px; border-radius: 50%; margin-right: 12px; border: 2px solid #3b82f6; object-fit: cover;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 15px; color: #1a1a1a;" id="feishu-card-name">飞书用户</div>
+                            <div style="font-size: 12px; color: #666; margin-top: 2px;" id="feishu-card-openid"></div>
+                        </div>
+                        <i class="fas fa-check-circle" style="color: #10b981; font-size: 20px;" title="已绑定"></i>
+                    </div>
+                </div>
+                <div class="lark-buttons">
+                    <div class="lark-button" id="bind-feishu-btn" style="cursor: pointer; flex: 1;">
+                        <i class="fas fa-link"></i> 绑定飞书
+                        <p style="font-size: 12px; margin-top: 5px;">OAuth 授权绑定</p>
+                    </div>
+                </div>
+
+            </div>
+            
+
+        </div>
+        
+        <section id="growth-section" class="hidden"><div class="growth-section-header"><div><span class="section-kicker">ENGINEER ROADMAP</span><h2>你的下一步，从这里出发</h2></div><button type="button" id="refresh-growth" class="secondary-button">刷新进度</button></div><div id="growth-route-host"></div></section>
+        <div id="badges-section" class="hidden"><div id="growth-wall-host" class="badge-wall"></div></div>
+
+        <div id="admin-section" class="hidden"><section class="badge-editor-panel"><div class="growth-section-header"><div><span class="section-kicker">BADGE WORKSHOP</span><h2>徽章工坊</h2></div></div><p class="editor-intro">创建协会荣誉，修改成长徽章的名称、符号与达成条件。</p><div id="badge-editor-list"></div></section><section class="growth-review-panel"><div class="growth-section-header"><div><span class="section-kicker">TASK REVIEW</span><h2>成长任务审核</h2></div><button type="button" id="refresh-growth-reviews" class="secondary-button">刷新列表</button></div><div id="growth-review-list"></div></section>
+            <div class="card">
+                <h2><i class="fas fa-users-cog"></i> 用户管理</h2>
+                <div class="admin-actions" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button class="add-user-btn" style="flex: 1; min-width: 150px;">
+                        <i class="fas fa-user-plus"></i> 添加新用户
+                    </button>
+                    <button class="export-data-btn" style="flex: 1; min-width: 150px; background-color: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.4); color: #3b82f6;">
+                        <i class="fas fa-download"></i> 导出数据
+                    </button>
+                    <button class="import-data-btn" style="flex: 1; min-width: 150px; background-color: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #10b981;">
+                        <i class="fas fa-upload"></i> 恢复 JSON 备份
+                    </button>
+                    <button class="import-csv-btn" style="flex: 1; min-width: 150px; background-color: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.4); color: #f59e0b;">
+                        <i class="fas fa-file-csv"></i> 批量添加新成员
+                    </button>
+                    <button type="button" id="configure-collaboration" class="secondary-button">配置飞书入口</button>
+                    <a href="./nfc-tool.html" class="secondary-button" style="flex:1;min-width:150px;text-align:center;padding:12px;text-decoration:none">NFC 写卡工具 ↗</a>
+                    <button class="manage-badges-btn" style="flex: 1; min-width: 150px; background-color: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.4); color: #a855f7;">
+                        <i class="fas fa-award"></i> 图鉴管理
+                    </button>
+                </div>
+                <div id="user-list">
+                    <div class="user-item" data-user="user1">
+                        <div class="user-info">
+                            <h3>林 卓 越</h3>
+                            <p>嵌入式硬件工程师</p>
+                        </div>
+                        <div class="user-actions">
+                            <button class="edit-user-btn">
+                                <i class="fas fa-user-edit"></i> 编辑信息
+                            </button>
+                            <button class="delete-user-btn">
+                                <i class="fas fa-trash"></i> 删除用户
+                            </button>
+                        </div>
+                    </div>
+                    <div class="user-item" data-user="user2">
+                        <div class="user-info">
+                            <h3>张 科 技</h3>
+                            <p>软件工程师</p>
+                        </div>
+                        <div class="user-actions">
+                            <button class="edit-user-btn">
+                                <i class="fas fa-user-edit"></i> 编辑信息
+                            </button>
+                            <button class="delete-user-btn">
+                                <i class="fas fa-trash"></i> 删除用户
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="add-user-section" class="hidden">
+            <div class="card">
+                <h2><i class="fas fa-user-plus"></i> 添加新用户</h2>
+                <div class="new-user-form">
+                    <div class="form-group">
+                        <label for="new-user-id">用户ID</label>
+                        <input type="text" id="new-user-id" placeholder="如: user3">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-name">姓名</label>
+                        <input type="text" id="new-user-name" placeholder="用户姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-gender">性别（选填，会在名片上展示）</label>
+                        <select id="new-user-gender"><option value="">未填写</option><option value="男">男</option><option value="女">女</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-student-id">学号</label>
+                        <input type="text" id="new-user-student-id" placeholder="如: 2022XXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-title">职位</label>
+                        <input type="hidden" id="new-user-title"><div data-title-picker="new-user-title"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-organization">组织</label>
+                        <input type="text" id="new-user-organization" placeholder="所属组织">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-major">专业</label>
+                        <input type="text" id="new-user-major" placeholder="专业信息">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-email">邮箱</label>
+                        <input type="email" id="new-user-email" placeholder="邮箱地址">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-github">GitHub</label>
+                        <input type="text" id="new-user-github" placeholder="GitHub用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-feishu-link"><i class="fas fa-feather" style="color: #3b82f6;"></i> 飞书名片链接</label>
+                        <input type="text" id="new-user-feishu-link" placeholder="飞书个人名片链接">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-password">密码</label>
+                        <input type="password" id="new-user-password" placeholder="登录密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-quote">个人格言</label>
+                        <input type="text" id="new-user-quote" placeholder="个人格言">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-bio">个人简介</label>
+                        <textarea id="new-user-bio" placeholder="个人简介"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-avatar">头像URL</label>
+                        <input type="text" id="new-user-avatar" placeholder="头像图片URL">
+                    </div>
+                    <div class="new-user-actions">
+                        <button class="save-user-btn">
+                            <i class="fas fa-save"></i> 保存用户
+                        </button>
+                        <button class="cancel-user-btn">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="admin-edit-section" class="hidden">
+            <div class="card">
+                <h2><i class="fas fa-user-edit"></i> 编辑用户信息</h2>
+                <p id="admin-edit-member-number"></p>
+
+                <!-- 基本信息编辑表单 -->
+                <div class="new-user-form" style="margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,215,0,0.15);">
+                    <h3 style="color: #ffd700; font-size: 15px; margin-bottom: 14px;"><i class="fas fa-id-card"></i> 基本信息</h3>
+                    <div class="form-group">
+                        <label for="admin-edit-name">姓名</label>
+                        <input type="text" id="admin-edit-name" placeholder="用户姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-gender">性别（选填，会在名片上展示）</label>
+                        <select id="admin-edit-gender"><option value="">未填写</option><option value="男">男</option><option value="女">女</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-student-id">学号</label>
+                        <input type="text" id="admin-edit-student-id" placeholder="如: 2022XXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-title">职位</label>
+                        <input type="hidden" id="admin-edit-title"><div data-title-picker="admin-edit-title"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-organization">组织</label>
+                        <input type="text" id="admin-edit-organization" placeholder="所属组织">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-major">专业</label>
+                        <input type="text" id="admin-edit-major" placeholder="专业信息">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-email">邮箱</label>
+                        <input type="email" id="admin-edit-email" placeholder="邮箱地址">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-phone">电话</label>
+                        <input type="text" id="admin-edit-phone" placeholder="电话号码">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-wechat">微信</label>
+                        <input type="text" id="admin-edit-wechat" placeholder="微信号">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-github">GitHub</label>
+                        <input type="text" id="admin-edit-github" placeholder="GitHub用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-feishu-link"><i class="fas fa-feather" style="color: #3b82f6;"></i> 飞书名片链接</label>
+                        <input type="text" id="admin-edit-feishu-link" placeholder="飞书个人名片链接（可在个人页通过OAuth绑定）">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-quote">个人格言</label>
+                        <input type="text" id="admin-edit-quote" placeholder="个人格言">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-edit-bio">个人简介</label>
+                        <textarea id="admin-edit-bio" placeholder="个人简介" style="min-height: 80px;"></textarea>
+                    </div>
+                </div>
+
+                <section><h3>成长勋章管理</h3><div id="member-growth-medals"></div></section>
+                <!-- 图鉴编辑 -->
+                <div>
+                    <h3 style="color: #ffd700; font-size: 15px; margin-bottom: 14px;"><i class="fas fa-award"></i> 旧协会荣誉记录</h3>
+                    <div id="edit-badges-list">
+                    </div>
+                    <button class="add-badge-btn" style="margin-bottom: 16px;">
+                        <i class="fas fa-plus"></i> 添加新图鉴
+                    </button>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="new-user-actions">
+                    <button class="save-badges-btn">
+                        <i class="fas fa-save"></i> 保存全部修改
+                    </button>
+                    <button class="cancel-edit-btn">
+                        <i class="fas fa-times"></i> 取消
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="badge-manage-section" class="hidden">
+            <div class="card">
+                <h2><i class="fas fa-award"></i> 全局图鉴管理</h2>
+                <p style="color: #8892b0; margin-bottom: 15px; font-size: 13px;">新增的图鉴将自动分配给所有用户（锁定状态）。删除图鉴将从所有用户中移除。</p>
+                <div class="admin-actions" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="add-global-badge-btn" style="flex: 1; min-width: 150px;">
+                        <i class="fas fa-plus"></i> 新增图鉴
+                    </button>
+                    <button class="back-to-admin-btn" style="flex: 1; min-width: 150px; background-color: rgba(136, 146, 176, 0.2); border-color: rgba(136, 146, 176, 0.4); color: #8892b0;">
+                        <i class="fas fa-arrow-left"></i> 返回用户管理
+                    </button>
+                </div>
+                <div id="global-badges-list">
+                    <p style="color: #8892b0; text-align: center;">加载中...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="profile-edit-section" class="hidden">
+            <div class="card">
+                <h2><i class="fas fa-user-edit"></i> 编辑个人信息</h2>
+                <div class="new-user-form">
+                    <!-- 头像预览区域 -->
+                    <div class="form-group">
+                        <label>头像</label>
+                        <div class="avatar-preview" style="text-align: center; margin-bottom: 20px;">
+                            <img id="edit-avatar-preview" src="" alt="头像预览" style="width: 120px; height: 120px; border-radius: 50%; cursor: pointer; border: 2px solid #ddd; padding: 2px;">
+                            <p style="margin-top: 10px; color: #666; font-size: 14px;">点击头像更换</p>
+                            <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-name">姓名</label>
+                        <input type="text" id="edit-profile-name" placeholder="用户姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-gender">性别（选填，会在名片上展示）</label>
+                        <select id="edit-profile-gender"><option value="">未填写</option><option value="男">男</option><option value="女">女</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-student-id">学号</label>
+                        <input type="text" id="edit-profile-student-id" placeholder="如: 2022XXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-title">职位</label>
+                        <input type="text" id="edit-profile-title" readonly aria-describedby="profile-title-help"><p id="profile-title-help">部门、职务和任职年份由管理员设置。</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-organization">组织</label>
+                        <input type="text" id="edit-profile-organization" placeholder="所属组织">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-major">专业</label>
+                        <input type="text" id="edit-profile-major" placeholder="专业信息">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-email">邮箱</label>
+                        <input type="email" id="edit-profile-email" placeholder="邮箱地址">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-phone">电话</label>
+                        <input type="text" id="edit-profile-phone" placeholder="电话号码">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-wechat">微信</label>
+                        <input type="text" id="edit-profile-wechat" placeholder="微信号">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-github">GitHub</label>
+                        <input type="text" id="edit-profile-github" placeholder="GitHub用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-feishu-link"><i class="fas fa-feather" style="color: #3b82f6;"></i> 飞书名片链接</label>
+                        <input type="text" id="edit-profile-feishu-link" placeholder="飞书个人名片链接（也可通过OAuth绑定）">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-quote">个人格言</label>
+                        <input type="text" id="edit-profile-quote" placeholder="个人格言">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-profile-bio">个人简介</label>
+                        <textarea id="edit-profile-bio" placeholder="个人简介"></textarea>
+                    </div>
+                    <div class="form-group" style="display: none;">
+                        <label for="edit-profile-avatar">头像URL</label>
+                        <input type="text" id="edit-profile-avatar" placeholder="头像图片URL">
+                    </div>
+                    <div class="new-user-actions">
+                        <button class="save-profile-btn">
+                            <i class="fas fa-save"></i> 保存修改
+                        </button>
+                        <button class="cancel-profile-btn">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© DESIGNED BY SZU MED-ENG</p>
+        </div>
+    </div>
+
+    <!-- 修改密码弹窗 -->
+    <div id="change-password-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;justify-content:center;align-items:center;">
+        <div style="background:#112240;border:1px solid rgba(255,215,0,0.3);border-radius:10px;padding:30px;max-width:400px;width:90%;">
+            <h2 style="color:#ffd700;margin-bottom:20px;font-size:20px;"><i class="fas fa-key"></i> 修改密码</h2>
+            <div style="display:flex;flex-direction:column;gap:15px;">
+                <div class="form-group">
+                    <label style="color:#8892b0;display:block;margin-bottom:5px;">旧密码</label>
+                    <input type="password" id="old-password" placeholder="请输入旧密码" style="width:100%;padding:10px;background:rgba(136,146,176,0.2);border:1px solid rgba(136,146,176,0.4);border-radius:5px;color:#fff;font-size:14px;box-sizing:border-box;">
+                </div>
+                <div class="form-group">
+                    <label style="color:#8892b0;display:block;margin-bottom:5px;">新密码</label>
+                    <input type="password" id="new-password" placeholder="请输入新密码（至少6位）" style="width:100%;padding:10px;background:rgba(136,146,176,0.2);border:1px solid rgba(136,146,176,0.4);border-radius:5px;color:#fff;font-size:14px;box-sizing:border-box;">
+                </div>
+                <div class="form-group">
+                    <label style="color:#8892b0;display:block;margin-bottom:5px;">确认新密码</label>
+                    <input type="password" id="confirm-password" placeholder="请再次输入新密码" style="width:100%;padding:10px;background:rgba(136,146,176,0.2);border:1px solid rgba(136,146,176,0.4);border-radius:5px;color:#fff;font-size:14px;box-sizing:border-box;">
+                </div>
+                <div id="password-change-error" style="color:#ef4444;font-size:13px;min-height:20px;"></div>
+                <div style="display:flex;gap:10px;justify-content:flex-end;">
+                    <button id="cancel-change-password" style="background:rgba(136,146,176,0.2);border:1px solid rgba(136,146,176,0.4);border-radius:5px;padding:8px 20px;color:#8892b0;cursor:pointer;font-size:14px;">取消</button>
+                    <button id="confirm-change-password" style="background:#ffd700;border:none;border-radius:5px;padding:8px 20px;color:#0a192f;cursor:pointer;font-size:14px;font-weight:bold;">确认修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <script>
+        // 加密工具
+        const CryptoUtil = {
+            // 简单的加密函数（实际项目中应使用更安全的加密方法）
+            encrypt(text, key) {
+                let result = '';
+                for (let i = 0; i < text.length; i++) {
+                    const charCode = text.charCodeAt(i);
+                    const keyCode = key.charCodeAt(i % key.length);
+                    result += String.fromCharCode(charCode ^ keyCode);
+                }
+                return btoa(result);
+            },
+            
+            // 解密函数
+            decrypt(encryptedText, key) {
+                const text = atob(encryptedText);
+                let result = '';
+                for (let i = 0; i < text.length; i++) {
+                    const charCode = text.charCodeAt(i);
+                    const keyCode = key.charCodeAt(i % key.length);
+                    result += String.fromCharCode(charCode ^ keyCode);
+                }
+                return result;
+            },
+            
+            // 加密对象
+            encryptObject(obj, key) {
+                return this.encrypt(JSON.stringify(obj), key);
+            },
+            
+            // 解密对象
+            decryptObject(encrypted, key) {
+                try {
+                    return JSON.parse(this.decrypt(encrypted, key));
+                } catch (e) {
+                    return null;
+                }
+            }
+        };
+        
+        // 加密密钥（实际项目中应使用更安全的密钥管理方式）
+        const ENCRYPTION_KEY = 'nfc_web_secure_key_2026';
+        
+        // 数据存储管理器
+        const DataManager = {
+            // 从localStorage加载数据
+            loadData() {
+                const savedUsers = localStorage.getItem('nfc_users');
+                localStorage.removeItem('nfc_credentials_encrypted');
+                
+                if (savedUsers) {
+                    return {
+                        users: JSON.parse(savedUsers),
+                        credentials: {}
+                    };
+                }
+                return null;
+            },
+            
+            // 保存数据到localStorage
+            saveData(users, credentials) {
+                localStorage.setItem('nfc_users', JSON.stringify(users));
+                localStorage.removeItem('nfc_credentials_encrypted');
+                // 移除旧的加密用户数据
+                localStorage.removeItem('nfc_users_encrypted');
+            },
+            
+            // 导出数据为JSON文件
+            exportData() {
+                const data = {
+                    users: users,
+                    credentials: {},
+                    exportTime: new Date().toISOString()
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `nfc_users_backup_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            },
+            
+            // 从JSON文件导入数据（调用后端API）
+            importData(file, callback) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        let usersList = [];
+                        
+                        // 兼容两种格式：
+                        // 格式1: { "users": [ { id, name, ... }, ... ] }
+                        // 格式2: { "users": { "user1": { id, name, ... }, "user2": { ... } } }
+                        if (data.users) {
+                            if (Array.isArray(data.users)) {
+                                usersList = data.users;
+                            } else if (typeof data.users === 'object') {
+                                usersList = Object.values(data.users);
+                            }
+                        } else if (Array.isArray(data)) {
+                            // 格式3: 直接是数组 [ { id, name, ... }, ... ]
+                            usersList = data;
+                        } else {
+                            callback(false, '无法识别 JSON 格式');
+                            return;
+                        }
+                        
+                        if (usersList.length === 0) {
+                            callback(false, 'JSON 中没有用户数据');
+                            return;
+                        }
+                        
+                        // 调用后端批量导入接口
+                        fetch('/api/admin/import-users', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ users: usersList })
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                callback(true, result.message + (result.errors && result.errors.length > 0 ? '，部分失败: ' + result.errors.join('; ') : ''));
+                            } else {
+                                callback(false, '导入失败: ' + (result.message || '未知错误'));
+                            }
+                        })
+                        .catch(error => {
+                            callback(false, '网络请求失败: ' + error.message);
+                        });
+                    } catch (error) {
+                        callback(false, 'JSON 解析失败: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            },
+            
+            // 批量导入用户（CSV格式）
+            importFromCSV(csvContent, callback) {
+                const lines = csvContent.trim().split('\n');
+                const headers = lines[0].split(',').map(h => h.trim());
+                const importedUsers = [];
+                const errors = [];
+                
+                for (let i = 1; i < lines.length; i++) {
+                    const values = lines[i].split(',').map(v => v.trim());
+                    if (values.length < 3) {
+                        errors.push(`第${i + 1}行数据不完整`);
+                        continue;
+                    }
+                    
+                    const userId = 'user' + (Object.keys(users).length + i);
+                    const user = {
+                        id: userId,
+                        name: values[0] || '未命名',
+                        title: values[1] || '未设置职位',
+                        organization: values[2] || '深圳大学医工融合卓越工程师协会',
+                        major: values[3] || '',
+                        email: values[4] || '',
+                        phone: values[5] || '',
+                        wechat: values[6] || '',
+                        github: values[7] || '',
+                        quote: values[8] || '暂无个人格言',
+                        bio: values[9] || '暂无个人简介',
+                        avatar: values[10] || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=default%20avatar&image_size=square',
+                        badges: [
+                            { name: 'PCB绘图入门', date: 'LOCKED', icon: 'lock', unlocked: false },
+                            { name: '3D打印实战', date: 'LOCKED', icon: 'lock', unlocked: false },
+                            { name: '生理信号处理', date: 'LOCKED', icon: 'lock', unlocked: false },
+                            { name: '医疗法规培训', date: 'LOCKED', icon: 'lock', unlocked: false },
+                            { name: '临床需求调研', date: 'LOCKED', icon: 'lock', unlocked: false },
+                            { name: '年度卓越项目', date: 'LOCKED', icon: 'lock', unlocked: false }
+                        ]
+                    };
+                    
+                    users[userId] = user;
+                    loginCredentials[userId] = '123456'; // 默认密码
+                    importedUsers.push(user.name);
+                }
+                
+                DataManager.saveData(users, loginCredentials);
+                callback(importedUsers, errors);
+            }
+        };
+        
+        // 默认用户数据
+        const defaultUsers = {
+            'user1': {
+                id: 'user1',
+                name: '林 卓 越',
+                title: '嵌入式硬件工程师',
+                organization: '深圳大学医工融合卓越工程师协会',
+                major: '生物医学工程 (2022级)',
+                email: 'lin.eng@szu.edu.cn',
+                phone: '13800138001',
+                wechat: 'linzhuoyue_wechat',
+                github: 'github.com/med-eng-dev',
+                quote: '致力于医疗器械小型化与可穿戴设备的创新设计。PCB Artist & Code Poet.',
+                bio: '热衷于探索医工交叉领域的前沿技术，专注于生物医学信号处理与嵌入式系统设计。曾参与多项国家级大学生创新训练项目，擅长PCB设计与3D建模。希望通过技术创新解决临床实际痛点，做一名有温度的工程师。',
+                avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cartoon%20avatar%20of%20a%20happy%20young%20woman%20with%20brown%20hair%20wearing%20a%20black%20shirt&image_size=square',
+                badges: [
+                    { name: 'PCB绘图入门', date: '2024.10.15', icon: 'cog', unlocked: true },
+                    { name: '3D打印实战', date: '2024.11.02', icon: 'bolt', unlocked: true },
+                    { name: '生理信号处理', date: '2025.01.10', icon: 'wave-square', unlocked: true },
+                    { name: '医疗法规培训', date: 'LOCKED', icon: 'lock', unlocked: false },
+                    { name: '临床需求调研', date: 'LOCKED', icon: 'lock', unlocked: false },
+                    { name: '年度卓越项目', date: 'LOCKED', icon: 'lock', unlocked: false }
+                ]
+            },
+            'user2': {
+                id: 'user2',
+                name: '张 科 技',
+                title: '软件工程师',
+                organization: '深圳大学医工融合卓越工程师协会',
+                major: '计算机科学与技术 (2021级)',
+                email: 'zhang.tech@szu.edu.cn',
+                phone: '13900139001',
+                wechat: 'zhangkeji_wechat',
+                github: 'github.com/tech-dev',
+                quote: '专注于医疗软件系统开发，追求代码的优雅与效率。',
+                bio: '热爱编程，擅长前端和后端开发，致力于将技术与医疗相结合，开发实用的医疗软件系统。曾参与多个医疗相关的软件开发项目，希望通过技术为医疗行业带来创新。',
+                avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cartoon%20avatar%20of%20a%20young%20man%20with%20glasses%20and%20short%20hair&image_size=square',
+                badges: [
+                    { name: '前端开发基础', date: '2024.09.10', icon: 'code', unlocked: true },
+                    { name: '后端框架应用', date: '2024.10.20', icon: 'server', unlocked: true },
+                    { name: '数据库设计', date: '2024.11.15', icon: 'database', unlocked: true },
+                    { name: '医疗软件规范', date: 'LOCKED', icon: 'lock', unlocked: false },
+                    { name: '系统架构设计', date: 'LOCKED', icon: 'lock', unlocked: false },
+                    { name: '年度优秀项目', date: 'LOCKED', icon: 'lock', unlocked: false }
+                ]
+            }
+        };
+        
+        // 清理旧数据
+        function cleanupOldData() {
+            // 移除旧的未加密凭证数据
+            localStorage.removeItem('nfc_credentials');
+            
+            // 检查加密用户数据是否存在，如果存在则移除
+            const encryptedUsers = localStorage.getItem('nfc_users_encrypted');
+            if (encryptedUsers) {
+                localStorage.removeItem('nfc_users_encrypted');
+            }
+        }
+        
+        // 初始化数据
+        let users = {};
+        let loginCredentials = {
+            'admin': 'password123',
+            'user1': '123456',
+            'user2': '123456'
+        };
+        
+        // 清理旧数据
+        cleanupOldData();
+        
+        // 尝试从localStorage加载数据
+        const savedData = DataManager.loadData();
+        if (savedData && savedData.users) {
+            users = savedData.users;
+            if (savedData.credentials) {
+                loginCredentials = savedData.credentials;
+            }
+        } else {
+            // 使用默认数据
+            users = { ...defaultUsers };
+            // 保存到localStorage
+            DataManager.saveData(users, loginCredentials);
+        }
+        
+        // 确保loginCredentials有默认值
+        if (!loginCredentials || typeof loginCredentials !== 'object') {
+            loginCredentials = {
+                'admin': 'password123',
+                'user1': '123456',
+                'user2': '123456'
+            };
+        }
+        
+        // 当前登录用户：由入口页传入身份；直接打开时默认为学生演示。
+        const entryParams = new URLSearchParams(window.location.search);
+        const entryRole = entryParams.get('role') === 'admin' ? 'admin' : 'student';
+        const entryUser = entryParams.get('user');
+        let currentUser = entryRole === 'admin' ? 'admin' : (entryUser === 'user2' ? 'user2' : 'user1');
+        
+        // 标签页切换功能
+        document.getElementById('tab-card').addEventListener('click', function() {
+            document.getElementById('tab-card').classList.add('active');
+            document.getElementById('tab-card').classList.remove('inactive');
+            document.getElementById('tab-badges').classList.add('inactive');
+            document.getElementById('tab-badges').classList.remove('active');
+            if (document.getElementById('tab-admin')) {
+                document.getElementById('tab-admin').classList.add('inactive');
+                document.getElementById('tab-admin').classList.remove('active');
+            }
+            document.getElementById('card-section').classList.remove('hidden');
+            document.getElementById('badges-section').classList.add('hidden');
+            if (document.getElementById('admin-section')) {
+                document.getElementById('admin-section').classList.add('hidden');
+            }
+            if (document.getElementById('admin-edit-section')) {
+                document.getElementById('admin-edit-section').classList.add('hidden');
+            }
+        });
+        
+        document.getElementById('tab-badges').addEventListener('click', function() {
+            document.getElementById('tab-badges').classList.add('active');
+            document.getElementById('tab-badges').classList.remove('inactive');
+            document.getElementById('tab-card').classList.add('inactive');
+            document.getElementById('tab-card').classList.remove('active');
+            if (document.getElementById('tab-admin')) {
+                document.getElementById('tab-admin').classList.add('inactive');
+                document.getElementById('tab-admin').classList.remove('active');
+            }
+            document.getElementById('badges-section').classList.remove('hidden');
+            document.getElementById('card-section').classList.add('hidden');
+            if (document.getElementById('admin-section')) {
+                document.getElementById('admin-section').classList.add('hidden');
+            }
+            if (document.getElementById('admin-edit-section')) {
+                document.getElementById('admin-edit-section').classList.add('hidden');
+            }
+        });
+        
+        // 管理员标签页切换功能
+        document.getElementById('tab-admin').addEventListener('click', function() {
+            document.getElementById('tab-admin').classList.add('active');
+            document.getElementById('tab-admin').classList.remove('inactive');
+            document.getElementById('tab-card').classList.add('inactive');
+            document.getElementById('tab-card').classList.remove('active');
+            document.getElementById('tab-badges').classList.add('inactive');
+            document.getElementById('tab-badges').classList.remove('active');
+            document.getElementById('admin-section').classList.remove('hidden');
+            document.getElementById('card-section').classList.add('hidden');
+            document.getElementById('badges-section').classList.add('hidden');
+            if (document.getElementById('admin-edit-section')) {
+                document.getElementById('admin-edit-section').classList.add('hidden');
+            }
+            if (document.getElementById('add-user-section')) {
+                document.getElementById('add-user-section').classList.add('hidden');
+            }
+            loadUserList();
+        });
+        
+        // 加载用户数据
+        function loadUser(userData) {
+            // 更新页面标题
+            document.title = userData.name + ' - 个人名片';
+            document.getElementById('main-container').dataset.profileId = userData.id;
+            document.getElementById('hero-title').textContent = userData.title || '尚未填写职位';
+            document.querySelector('.member-heading .subtitle').textContent = userData.organization || '医工融合卓越工程师协会';
+            // 更新头像
+            ContactUI.mount(document.getElementById('account-contact-tools'),userData);
+            if(currentUser)CollaborationUI.load(document.getElementById('account-collaboration'));else document.getElementById('account-collaboration').replaceChildren();
+            document.querySelector('.profile-img').src = userData.avatar;
+            document.querySelector('.profile-img').alt = userData.name;
+            
+            // 更新个人信息
+            document.querySelector('h1').textContent = userData.name;
+            document.querySelector('.card h2').textContent = userData.title;
+            document.querySelector('.card h2').nextElementSibling.textContent = userData.organization;
+            
+            // 更新学号（有值则显示，否则隐藏）
+            const studentIdItem = document.getElementById('student-id-item');
+            const studentIdDisplay = document.getElementById('student-id-display');
+            if (userData.student_id && userData.student_id.trim()) {
+                studentIdDisplay.textContent = '学号：' + userData.student_id;
+                studentIdItem.style.display = '';
+            } else {
+                studentIdItem.style.display = 'none';
+            }
+            
+            document.getElementById('gender-item').classList.toggle('hidden',!userData.gender);
+            document.getElementById('gender-display').textContent=userData.gender?'性别：'+userData.gender:'';
+            // 更新详细信息（通过 id 精确定位，避免下标偏移）
+            const cardItems = document.querySelectorAll('.card-item');
+            // cardItems[0] = 学号（已通过 id 处理）
+            // cardItems[1] = 专业, cardItems[2] = 邮箱, cardItems[3] = GitHub
+            const majorItem = Array.from(cardItems).find(el => el.querySelector('i.fa-graduation-cap'));
+            const emailItem = Array.from(cardItems).find(el => el.querySelector('i.fa-envelope'));
+            const githubItem = Array.from(cardItems).find(el => el.querySelector('i.fa-github'));
+            if (majorItem) majorItem.querySelector('span').textContent = userData.major;
+            if (emailItem) {
+                emailItem.querySelector('a').textContent = userData.email;
+                emailItem.querySelector('a').href = 'mailto:' + userData.email;
+            }
+            if (githubItem) {
+                githubItem.querySelector('a').textContent = userData.github;
+                githubItem.querySelector('a').href = safeWebUrl(userData.github);
+            }
+            
+            // 更新个人简介
+            document.querySelector('.quote').textContent = '"' + userData.quote + '"';
+            document.querySelector('.card:nth-child(2) p').textContent = userData.bio;
+            
+            // 更新徽章
+
+
+            // 更新飞书模块状态
+            updateFeishuSection(userData);
+
+            // 检查是否是登录用户
+            const isCurrentUser = currentUser && userData.id === currentUser;
+            
+            // 更新侧边栏和退出按钮
+            updateSidebarAndLogout(isCurrentUser);
+            GrowthUI.render(userData);
+        }
+        
+        // 更新侧边栏和退出按钮
+        function updateSidebarAndLogout(isCurrentUser) {
+            const sidebar = document.querySelector('.sidebar');
+            const logoutButton = document.getElementById('logout-button');
+            
+            if (isCurrentUser) {
+                // 登录用户：显示侧边栏，退出按钮
+                sidebar.style.display = 'flex';
+                logoutButton.innerHTML = '<i class="fas fa-sign-out-alt"></i> 退出';
+                logoutButton.onclick = function() {
+                    logoutUser();
+                };
+            } else {
+                // 非登录用户：隐藏侧边栏，返回按钮，显示登录用户信息
+                sidebar.style.display = 'none';
+                const currentUserData = users[currentUser];
+                logoutButton.innerHTML = `<i class="fas fa-arrow-left"></i> 返回 (${currentUserData ? currentUserData.name : '未知'})`;
+                logoutButton.onclick = function() {
+                    returnToCurrentUser();
+                };
+            }
+        }
+        
+        // 返回登录用户
+        function returnToCurrentUser() {
+            if (currentUser && users[currentUser]) {
+                loadUser(users[currentUser]);
+                showNotification('返回成功', `已返回到 ${users[currentUser].name} 的主页`);
+            }
+        }
+        
+        // 退出登录
+        function logoutUser() {
+            // 本地静态演示不调用后端，退出后仍回到演示主页。
+            localStorage.removeItem('nfc_login_user');
+            localStorage.removeItem('nfc_login_token');
+            currentUser = entryRole === 'admin' ? 'admin' : (entryUser === 'user2' ? 'user2' : 'user1');
+            document.getElementById('login-container').classList.add('hidden');
+            document.getElementById('main-container').classList.remove('hidden');
+            document.getElementById('tab-admin').classList.toggle('hidden', entryRole !== 'admin');
+            loadUser(users[currentUser] || users.user1);
+            updateSidebarAndLogout(true);
+            showNotification('本地演示', '当前版本不连接后端，已回到演示主页');
+        }
+
+        // 打开修改密码弹窗
+        function openChangePasswordModal() {
+            document.getElementById('old-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+            document.getElementById('password-change-error').textContent = '';
+            const modal = document.getElementById('change-password-modal');
+            modal.style.display = 'flex';
+        }
+
+        // 关闭修改密码弹窗
+        function closeChangePasswordModal() {
+            document.getElementById('change-password-modal').style.display = 'none';
+        }
+
+        // 处理修改密码
+        function handleChangePassword() {
+            const oldPassword = document.getElementById('old-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const errorDiv = document.getElementById('password-change-error');
+
+            // 前端校验
+            if (!oldPassword || !newPassword || !confirmPassword) {
+                errorDiv.textContent = '请填写所有字段';
+                return;
+            }
+            if (newPassword.length < 6) {
+                errorDiv.textContent = '新密码长度不能少于6位';
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                errorDiv.textContent = '两次输入的新密码不一致';
+                return;
+            }
+            if (oldPassword === newPassword) {
+                errorDiv.textContent = '新密码不能与旧密码相同';
+                return;
+            }
+
+            // 调用后端API
+            fetch('/api/change-password', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUser, oldPassword, newPassword })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeChangePasswordModal();
+                    showNotification('成功', '密码修改成功，请使用新密码重新登录');
+                    // 修改成功后自动退出登录
+                    setTimeout(function() { logoutUser(); }, 1500);
+                } else {
+                    errorDiv.textContent = data.message || '修改失败';
+                }
+            })
+            .catch(function() {
+                errorDiv.textContent = '网络错误，请稍后重试';
+            });
+        }
+        
+        // 绑定飞书 OAuth
+        function bindFeishu() {
+            if (!currentUser) {
+                showNotification('提示', '请先登录后再绑定飞书');
+                return;
+            }
+            fetch('/api/feishu/login?user_id=' + currentUser)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.url;
+                    } else {
+                        showNotification('提示', data.message || '飞书应用未配置');
+                    }
+                })
+                .catch(err => {
+                    showNotification('错误', '请求飞书授权失败');
+                    console.error('飞书授权请求失败:', err);
+                });
+        }
+
+
+        // 更新飞书模块显示状态
+        function updateFeishuSection(user) {
+            const statusSpan = document.getElementById('feishu-bind-status');
+            const bindBtn = document.getElementById('bind-feishu-btn');
+            const cardContainer = document.getElementById('feishu-card-container');
+            const cardAvatar = document.getElementById('feishu-card-avatar');
+            const cardName = document.getElementById('feishu-card-name');
+            const cardOpenId = document.getElementById('feishu-card-openid');
+
+            if (user.feishu_open_id && user.feishu_open_id.trim()) {
+                // 已绑定飞书：显示内嵌名片卡片
+                statusSpan.textContent = '已绑定';
+                statusSpan.style.backgroundColor = '#10b981';
+                cardContainer.classList.remove('hidden');
+                cardName.textContent = user.name || '飞书用户';
+                cardOpenId.textContent = 'ID: ' + user.feishu_open_id.substring(0, 16) + '...';
+                if (user.feishu_avatar && user.feishu_avatar.trim()) {
+                    cardAvatar.src = user.feishu_avatar;
+                    cardAvatar.style.display = 'block';
+                } else {
+                    cardAvatar.style.display = 'none';
+                }
+                bindBtn.innerHTML = '<i class="fas fa-check-circle"></i> 已绑定飞书<p style="font-size: 12px; margin-top: 5px;">飞书账号已关联</p>';
+            } else {
+                // 未绑定
+                statusSpan.textContent = '未绑定';
+                statusSpan.style.backgroundColor = '#3b82f6';
+                cardContainer.classList.add('hidden');
+                bindBtn.innerHTML = '<i class="fas fa-link"></i> 绑定飞书<p style="font-size: 12px; margin-top: 5px;">OAuth 授权绑定</p>';
+            }
+        }
+        
+
+        // 显示通知（已禁用）
+        function showNotification(title, message) {
+            document.querySelectorAll('.account-page .notification').forEach(item => item.remove());
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.setAttribute('role', 'status');
+            notification.textContent = title + '：' + message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 5000);
+        }
+        
+        // 开始编辑模式
+        function startEditMode() {
+            console.log('开始编辑模式，当前用户:', currentUser);
+            
+            if (!currentUser) {
+                console.log('错误: 未登录');
+                return;
+            }
+            
+            if (currentUser === 'admin') {
+                console.log('错误: 管理员不能编辑个人信息');
+                return;
+            }
+            
+            const user = users[currentUser];
+            if (!user) {
+                console.log('错误: 用户信息未找到');
+                return;
+            }
+            
+            console.log('正在填充编辑表单，用户数据:', user);
+            
+            // 获取表单元素并填充数据
+            const nameInput = document.getElementById('edit-profile-name');
+            const titleInput = document.getElementById('edit-profile-title');
+            const orgInput = document.getElementById('edit-profile-organization');
+            const majorInput = document.getElementById('edit-profile-major');
+            const emailInput = document.getElementById('edit-profile-email');
+            const phoneInput = document.getElementById('edit-profile-phone');
+            const wechatInput = document.getElementById('edit-profile-wechat');
+            const githubInput = document.getElementById('edit-profile-github');
+            const quoteInput = document.getElementById('edit-profile-quote');
+            const bioInput = document.getElementById('edit-profile-bio');
+            const avatarInput = document.getElementById('edit-profile-avatar');
+            const avatarPreview = document.getElementById('edit-avatar-preview');
+            const avatarUpload = document.getElementById('avatar-upload');
+            
+            if (nameInput) nameInput.value = user.name || '';
+            document.getElementById('edit-profile-gender').value = user.gender || '';
+            ContactUI.fill('edit-profile',user);
+            const studentIdInput = document.getElementById('edit-profile-student-id');
+            if (studentIdInput) studentIdInput.value = user.student_id || '';
+            if (titleInput) titleInput.value = user.title || '成员';
+            if (orgInput) orgInput.value = user.organization || '';
+            if (majorInput) majorInput.value = user.major || '';
+            if (emailInput) emailInput.value = user.email || '';
+            if (phoneInput) phoneInput.value = user.phone || '';
+            if (wechatInput) wechatInput.value = user.wechat || '';
+            if (githubInput) githubInput.value = user.github || '';
+            const feishuLinkInput = document.getElementById('edit-profile-feishu-link');
+            if (feishuLinkInput) feishuLinkInput.value = user.feishu_link || '';
+            if (quoteInput) quoteInput.value = user.quote || '';
+            if (bioInput) bioInput.value = user.bio || '';
+            if (avatarInput) avatarInput.value = user.avatar || '';
+            
+            // 显示头像预览
+            if (avatarPreview) {
+                avatarPreview.src = user.avatar || '/avatar.svg';
+            }
+            
+            // 为头像添加点击事件
+            if (avatarPreview) {
+                avatarPreview.addEventListener('click', function() {
+                    if (avatarUpload) {
+                        avatarUpload.click();
+                    }
+                });
+            }
+            
+            // 为文件上传添加事件（自动压缩）
+            if (avatarUpload) {
+                avatarUpload.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    // 使用 canvas 压缩图片
+                    const img = new Image();
+                    const url = URL.createObjectURL(file);
+                    img.onload = function() {
+                        URL.revokeObjectURL(url);
+                        const canvas = document.createElement('canvas');
+                        const maxSize = 240;
+                        let w = img.width, h = img.height;
+                        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+                        else { w = Math.round(w * maxSize / h); h = maxSize; }
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                        if (avatarPreview) avatarPreview.src = compressed;
+                        if (avatarInput) avatarInput.value = compressed;
+                    };
+                    img.src = url;
+                });
+            }
+            
+            // 隐藏所有内容区域
+            const cardSection = document.getElementById('card-section');
+            const badgesSection = document.getElementById('badges-section');
+            const adminSection = document.getElementById('admin-section');
+            const profileEditSection = document.getElementById('profile-edit-section');
+            
+            if (cardSection) cardSection.classList.add('hidden');
+            if (badgesSection) badgesSection.classList.add('hidden');
+            if (adminSection) adminSection.classList.add('hidden');
+            
+            // 显示编辑界面
+            if (profileEditSection) {
+                profileEditSection.classList.remove('hidden');
+                showEditorStart('profile-edit-section');
+                console.log('编辑界面已显示');
+            } else {
+                console.log('错误: 找不到编辑界面元素');
+            }
+        }
+        
+        // 保存个人信息
+        async function saveProfile() {
+            console.log('保存个人信息，当前用户:', currentUser);
+            
+            if (!currentUser) {
+                console.log('错误: 未登录');
+                return;
+            }
+            
+            // 获取表单值
+            const nameInput = document.getElementById('edit-profile-name');
+            const titleInput = document.getElementById('edit-profile-title');
+            const orgInput = document.getElementById('edit-profile-organization');
+            const majorInput = document.getElementById('edit-profile-major');
+            const emailInput = document.getElementById('edit-profile-email');
+            const phoneInput = document.getElementById('edit-profile-phone');
+            const wechatInput = document.getElementById('edit-profile-wechat');
+            const githubInput = document.getElementById('edit-profile-github');
+            const quoteInput = document.getElementById('edit-profile-quote');
+            const bioInput = document.getElementById('edit-profile-bio');
+            const avatarInput = document.getElementById('edit-profile-avatar');
+            
+            const name = nameInput ? nameInput.value.trim() : '';
+            
+            if (!name) {
+                console.log('错误: 姓名为空');
+                return;
+            }
+            
+            // Prepare a draft; commit it only after the server accepts the update.
+            const draft = { ...users[currentUser] };
+            // 更新用户数据
+            if (!users[currentUser]) {
+                console.log('错误: 用户数据不存在');
+                return;
+            }
+            
+            draft.name = name;
+            draft.student_id = document.getElementById('edit-profile-student-id') ? document.getElementById('edit-profile-student-id').value.trim() : '';
+            draft.gender=document.getElementById('edit-profile-gender').value;
+            draft.wechat_qr=document.getElementById('edit-profile-wechat-qr').value;
+            delete draft.title; // Position assignments are administrator-controlled.
+            draft.organization = orgInput ? orgInput.value.trim() || '未设置组织' : '未设置组织';
+            draft.major = majorInput ? majorInput.value.trim() || '' : '';
+            draft.email = emailInput ? emailInput.value.trim() || '' : '';
+            draft.phone = phoneInput ? phoneInput.value.trim() || '' : '';
+            draft.wechat = wechatInput ? wechatInput.value.trim() || '' : '';
+            draft.github = githubInput ? githubInput.value.trim() || '' : '';
+            draft.feishu_link = document.getElementById('edit-profile-feishu-link') ? document.getElementById('edit-profile-feishu-link').value.trim() : '';
+            draft.quote = quoteInput ? quoteInput.value.trim() || '暂无个人格言' : '暂无个人格言';
+            draft.bio = bioInput ? bioInput.value.trim() || '暂无个人简介' : '暂无个人简介';
+            draft.avatar = avatarInput ? avatarInput.value.trim() || '/avatar.svg' : '/avatar.svg';
+            
+            try {
+                const response = await fetch(`/api/users/${currentUser}`, {
+                    method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(draft)
+                });
+                const data = await response.json();
+                if (!response.ok || !data.success) throw new Error(data.message || '保存失败，请重试');
+                users[currentUser] = data.user;
+                DataManager.saveData(users, loginCredentials);
+                loadUser(users[currentUser]);
+                showNotification('保存成功', '你的名片已更新');
+            } catch (error) {
+                showNotification('保存失败', error.message || '网络连接失败，请重试');
+                return;
+            }
+
+            // 返回主界面
+            document.getElementById('growth-section').classList.add('hidden');
+            const profileEditSection = document.getElementById('profile-edit-section');
+            const cardSection = document.getElementById('card-section');
+            
+            if (profileEditSection) profileEditSection.classList.add('hidden');
+            if (cardSection) cardSection.classList.remove('hidden');
+            
+            console.log('编辑完成，已返回主界面');
+        }
+        
+        // 取消编辑个人信息
+        function cancelProfileEdit() {
+            console.log('取消编辑');
+            
+            document.getElementById('growth-section').classList.add('hidden');
+            const profileEditSection = document.getElementById('profile-edit-section');
+            const cardSection = document.getElementById('card-section');
+            
+            if (profileEditSection) profileEditSection.classList.add('hidden');
+            if (cardSection) cardSection.classList.remove('hidden');
+        }
+        
+        // 显示用户输入框模拟NFC识别
+        function showUserInputForNFC() {
+            if (!currentUser) {
+                showNotification('错误', '请先登录');
+                return;
+            }
+            
+            const inputForm = document.createElement('div');
+            inputForm.className = 'user-input-overlay';
+            inputForm.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+            `;
+            
+            inputForm.innerHTML = `
+                <div class="user-input-form" style="
+                    background-color: #0a192f;
+                    padding: 30px;
+                    border-radius: 10px;
+                    width: 90%;
+                    max-width: 400px;
+                    border: 1px solid #ffd700;
+                ">
+                    <h2 style="color: #ffd700; margin-bottom: 20px; text-align: center;">
+                        <i class="fas fa-user"></i> 模拟NFC识别
+                    </h2>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="color: #8892b0; display: block; margin-bottom: 10px;">请输入要访问的用户ID</label>
+                        <input type="text" id="target-user-id" placeholder="如: user1, user2" style="
+                            width: 100%;
+                            padding: 12px;
+                            background-color: rgba(136, 146, 176, 0.1);
+                            border: 1px solid rgba(136, 146, 176, 0.3);
+                            border-radius: 5px;
+                            color: #8892b0;
+                            font-size: 16px;
+                        ">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="confirm-user-id" style="
+                            flex: 1;
+                            padding: 12px;
+                            background-color: rgba(72, 187, 120, 0.2);
+                            border: 1px solid rgba(72, 187, 120, 0.4);
+                            border-radius: 5px;
+                            color: #48bb78;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            font-size: 16px;
+                        ">
+                            <i class="fas fa-check"></i> 确认
+                        </button>
+                        <button id="cancel-user-id" style="
+                            flex: 1;
+                            padding: 12px;
+                            background-color: rgba(136, 146, 176, 0.2);
+                            border: 1px solid rgba(136, 146, 176, 0.4);
+                            border-radius: 5px;
+                            color: #8892b0;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            font-size: 16px;
+                        ">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(inputForm);
+            
+            const targetUserIdInput = document.getElementById('target-user-id');
+            targetUserIdInput.focus();
+            
+            // 确认按钮点击事件
+            document.getElementById('confirm-user-id').addEventListener('click', function() {
+                const targetUserId = targetUserIdInput.value.trim();
+                
+                if (!targetUserId) {
+                    showNotification('错误', '请输入用户ID');
+                    return;
+                }
+                
+                if (!users[targetUserId]) {
+                    showNotification('错误', '未找到对应用户');
+                    return;
+                }
+                
+                // 加载目标用户信息
+                loadUser(users[targetUserId]);
+                
+                showNotification('访问成功', `已访问用户：${users[targetUserId].name}`);
+                inputForm.remove();
+            });
+            
+            // 取消按钮点击事件
+            document.getElementById('cancel-user-id').addEventListener('click', function() {
+                inputForm.remove();
+            });
+            
+            // 回车键确认
+            targetUserIdInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('confirm-user-id').click();
+                }
+            });
+        }
+        
+        // 开始NFC扫描
+        function startNFCScan() {
+            if ('NDEFReader' in window) {
+                const reader = new NDEFReader();
+                
+                reader.addEventListener('reading', event => {
+                    console.log('NFC tag read:', event.message);
+                    
+                    for (const record of event.message.records) {
+                        if (record.recordType === 'text') {
+                            const textDecoder = new TextDecoder(record.encoding || 'utf-8');
+                            const user_id = textDecoder.decode(record.data);
+                            console.log('User ID from NFC:', user_id);
+                            
+                            if (users[user_id]) {
+                                // 直接跳转到对应用户的名片界面
+                                document.getElementById('login-container').classList.add('hidden');
+                                document.getElementById('main-container').classList.remove('hidden');
+                                
+                                // 设置当前用户为null（表示未登录状态）
+                                currentUser = null;
+                                
+                                // 加载目标用户信息
+                                loadUser(users[user_id]);
+                                
+                                // 更新侧边栏和退出按钮
+                                updateSidebarAndLogout(false);
+                                
+                                console.log('NFC读取成功: 已加载用户信息');
+                            } else {
+                                console.log('NFC读取失败: 未找到对应用户信息');
+                            }
+                        }
+                    }
+                });
+                
+                reader.addEventListener('error', event => {
+                    console.error('NFC error:', event);
+                    showNotification('NFC错误', '读取NFC标签时发生错误');
+                });
+                
+                // 开始扫描
+                reader.scan().then(() => {
+                    console.log('NFC reader started');
+                    showNotification('NFC已就绪', '请将NFC卡片靠近设备');
+                }).catch(error => {
+                    console.error('Failed to start NFC reader:', error);
+                    showNotification('NFC初始化失败', '您的设备可能不支持NFC功能');
+                });
+            } else {
+                console.log('NFC is not supported in this browser');
+                showNotification('NFC不支持', '您的浏览器或设备不支持NFC功能');
+            }
+        }
+        
+        // 登录功能
+        function initLogin() {
+            const loginButton = document.getElementById('login-button');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginError = document.getElementById('login-error');
+            const logoutButton = document.getElementById('logout-button');
+            
+            // 登录按钮点击事件
+            document.getElementById('login-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                if (loginButton.disabled) return;
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                
+                if (!username || !password) {
+                    loginError.textContent = '请输入用户名和密码';
+                    return;
+                }
+                
+                loginButton.disabled = true;
+                loginButton.textContent = '正在登录…';
+                loginError.textContent = '';
+                // 通过后端API验证登录
+                fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 登录成功
+                        loginError.textContent = '';
+                        document.getElementById('login-container').classList.add('hidden');
+                        document.getElementById('main-container').classList.remove('hidden');
+
+                        // 设置当前用户
+                        currentUser = username;
+
+                        // 保存登录状态到 localStorage
+                        localStorage.setItem('nfc_login_user', username);
+                        localStorage.setItem('nfc_login_token', data.token);
+
+                        // 用后端返回的用户数据更新本地缓存
+                        if (data.user) {
+                            users[username] = data.user;
+                            DataManager.saveData(users, loginCredentials);
+                        }
+                        
+                        // 检查是否是管理员
+                        if (username === 'admin') {
+                            // 管理员登录
+                            document.getElementById('tab-admin').classList.remove('hidden');
+                            // 默认加载第一个用户
+                            if (users.user1) {
+                                loadUser(users.user1);
+                            } else {
+                                // 如果没有user1，加载第一个可用用户
+                                const firstUserId = Object.keys(users)[0];
+                                if (firstUserId) {
+                                    loadUser(users[firstUserId]);
+                                }
+                            }
+                            console.log('管理员登录成功: 欢迎管理员！');
+                        } else {
+                            // 普通用户登录
+                            document.getElementById('tab-admin').classList.add('hidden');
+                            // 加载对应用户数据
+                            if (users[username]) {
+                                loadUser(users[username]);
+                            } else {
+                                // 如果找不到用户，加载第一个可用用户
+                                const firstUserId = Object.keys(users)[0];
+                                if (firstUserId) {
+                                    loadUser(users[firstUserId]);
+                                }
+                            }
+                            console.log('登录成功: 欢迎回来！');
+                        }
+                        
+                        // 更新侧边栏和退出按钮
+                        updateSidebarAndLogout(true);
+                    } else {
+                        // 登录失败
+                        loginError.textContent = data.message || '用户名或密码错误';
+                    }
+                })
+                .catch(error => {
+                    console.error('登录请求失败:', error);
+                    loginError.textContent = '暂时无法登录，请检查网络后重试';
+                }).finally(() => {
+                    loginButton.disabled = false;
+                    loginButton.innerHTML = '登录 <span aria-hidden="true">↗</span>';
+                });
+            });
+            
+
+        }
+        
+        // 初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            // 检查飞书绑定回调
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('feishu_bound')) {
+                showNotification('绑定成功', '已成功绑定飞书账号！');
+                // 清除 URL 参数
+                window.history.replaceState({}, '', window.location.pathname);
+                // 重新从 API 拉取最新用户数据（包含飞书头像等）
+                if (currentUser) {
+                    fetch('/api/users/' + currentUser)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success && data.user) {
+                                users[currentUser] = data.user;
+                                updateFeishuSection(data.user);
+                            }
+                        })
+                        .catch(err => console.error('刷新用户数据失败:', err));
+                }
+            }
+
+            // 初始化登录功能
+            initLogin();
+
+            // 自动恢复登录状态
+            (function autoLogin() {
+                const savedUser = localStorage.getItem('nfc_login_user');
+                const loginButton = document.getElementById('login-button');
+                const loginError = document.getElementById('login-error');
+                const loginForm = document.getElementById('login-form');
+                loginButton.disabled = true;
+                loginButton.textContent = 'Redirecting...';
+                loginForm.setAttribute('aria-busy', 'true');
+                loginError.setAttribute('role', 'status');
+                loginError.textContent = '正在恢复登录，即将进入你的主页…';
+                const controller = new AbortController();
+                const restoreTimeout = setTimeout(() => controller.abort(), 10000);
+
+                fetch('/api/users/' + savedUser, {signal: controller.signal})
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success && data.user) {
+                            loginError.textContent = '';
+                            currentUser = savedUser;
+                            users[savedUser] = data.user;
+                            document.getElementById('login-container').classList.add('hidden');
+                            document.getElementById('main-container').classList.remove('hidden');
+
+                            if (savedUser === 'admin') {
+                                document.getElementById('tab-admin').classList.remove('hidden');
+                                if (users.user1) loadUser(users.user1);
+                                else {
+                                    const first = Object.keys(users)[0];
+                                    if (first) loadUser(users[first]);
+                                }
+                            } else {
+                                document.getElementById('tab-admin').classList.add('hidden');
+                                loadUser(users[savedUser]);
+                            }
+                            updateSidebarAndLogout(true);
+                            console.log('自动登录成功: 欢迎回来！');
+                        } else {
+                            localStorage.removeItem('nfc_login_user');
+                            localStorage.removeItem('nfc_login_token');
+                            loginError.textContent = '登录已过期，请重新登录';
+                        }
+                    })
+                    .catch(() => {
+                        loginError.textContent = '暂时无法恢复登录，请重新登录';
+                    }).finally(() => {
+                        clearTimeout(restoreTimeout);
+                        loginButton.disabled = false;
+                        loginButton.innerHTML = '登录 <span aria-hidden="true">&#8599;</span>';
+                        loginForm.removeAttribute('aria-busy');
+                        loginError.setAttribute('role', 'alert');
+                    });
+            })();
+
+            // 本地静态演示：按入口身份进入，不请求 /api。
+            document.getElementById('login-container').classList.add('hidden');
+            document.getElementById('main-container').classList.remove('hidden');
+            const adminTab = document.getElementById('tab-admin');
+            if (entryRole === 'admin') {
+                adminTab.classList.remove('hidden');
+                loadUser(users.user1 || users[Object.keys(users)[0]]);
+            } else {
+                adminTab.classList.add('hidden');
+                loadUser(users[currentUser] || users.user1);
+            }
+            updateSidebarAndLogout(true);
+            document.getElementById('sidebar-edit-btn').addEventListener('click', function() {
+                startEditMode();
+            });
+
+            // 侧边栏按钮点击事件 - 修改密码
+            document.getElementById('sidebar-password-btn').addEventListener('click', function() {
+                openChangePasswordModal();
+            });
+
+            // 修改密码弹窗 - 取消
+            document.getElementById('cancel-change-password').addEventListener('click', function() {
+                closeChangePasswordModal();
+            });
+
+            // 修改密码弹窗 - 确认
+            document.getElementById('confirm-change-password').addEventListener('click', function() {
+                handleChangePassword();
+            });
+            
+            // 初始化管理员功能
+            initAdminFeatures();
+            
+            // 绑定飞书按钮
+            document.getElementById('bind-feishu-btn').addEventListener('click', function() {
+                const displayName = document.getElementById('feishu-display-name').textContent;
+                if (displayName !== '未绑定飞书') {
+                    showNotification('提示', '飞书已绑定，无需重复操作');
+                } else {
+                    bindFeishu();
+                }
+            });
+
+        });
+        
+        // 管理员功能
+        let currentEditingUser = null;
+        let tempBadges = [];
+        
+        function initAdminFeatures() {
+            // 添加用户按钮点击事件
+            document.querySelector('.add-user-btn').addEventListener('click', function() {
+                showAddUserForm();
+            });
+            
+            // 编辑用户按钮点击事件
+            document.querySelectorAll('.edit-user-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = this.closest('.user-item').dataset.user;
+                    openEditUser(userId);
+                });
+            });
+            
+            // 删除用户按钮点击事件
+            document.querySelectorAll('.delete-user-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = this.closest('.user-item').dataset.user;
+                    deleteUser(userId);
+                });
+            });
+            
+            // 添加新图鉴按钮点击事件
+            document.querySelector('.add-badge-btn').addEventListener('click', function() {
+                showNewBadgeForm();
+            });
+            
+            // 保存修改按钮点击事件
+            document.querySelector('.save-badges-btn').addEventListener('click', function() {
+                saveBadgesChanges();
+            });
+            
+            // 取消编辑按钮点击事件
+            document.querySelector('.cancel-edit-btn').addEventListener('click', function() {
+                cancelEditUser();
+            });
+            
+            // 保存用户按钮点击事件
+            document.querySelector('.save-user-btn').addEventListener('click', function() {
+                saveNewUser();
+            });
+            
+            // 取消添加用户按钮点击事件
+            document.querySelector('.cancel-user-btn').addEventListener('click', function() {
+                cancelAddUser();
+            });
+            
+            // 保存个人信息按钮点击事件
+            document.querySelector('.save-profile-btn').addEventListener('click', function() {
+                saveProfile();
+            });
+            
+            // 取消编辑个人信息按钮点击事件
+            document.querySelector('.cancel-profile-btn').addEventListener('click', function() {
+                cancelProfileEdit();
+            });
+            
+            // 数据导出按钮点击事件
+            document.querySelector('.export-data-btn').addEventListener('click', function() {
+                DataManager.exportData();
+                showNotification('导出成功', '用户数据已导出为JSON文件');
+            });
+            
+            // 数据导入按钮点击事件
+            document.querySelector('.import-data-btn').addEventListener('click', function() {
+                showImportDataForm();
+            });
+            
+            // CSV批量导入按钮点击事件
+            document.querySelector('.import-csv-btn').addEventListener('click', function() {
+                showImportCSVForm();
+            });
+            
+            // 图鉴管理按钮点击事件
+            document.querySelector('.manage-badges-btn').addEventListener('click', function() {
+                showBadgeManageSection();
+            });
+            
+            // 返回用户管理按钮
+            document.querySelector('.back-to-admin-btn').addEventListener('click', function() {
+                document.getElementById('badge-manage-section').classList.add('hidden');
+                document.getElementById('admin-section').classList.remove('hidden');
+            });
+            
+            // 全局新增图鉴按钮
+            document.querySelector('.add-global-badge-btn').addEventListener('click', function() {
+                showAddGlobalBadgeForm();
+            });
+        }
+        
+        function loadUserList() {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            
+            // 从服务器获取用户列表
+            fetch('/api/admin/users')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        users = data.users;
+                        
+                        (data.userOrder || Object.keys(users)).forEach(userId => {
+                            const user = users[userId];
+                            const userItem = document.createElement('div');
+                            userItem.className = 'user-item';
+                            userItem.dataset.user = userId;
+                            userItem.innerHTML = `
+                                <div class="user-info">
+                                    <h3></h3>
+                                    <p></p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="edit-user-btn">
+                                        <i class="fas fa-user-edit"></i> 编辑信息
+                                    </button>
+                                    <button class="delete-user-btn">
+                                        <i class="fas fa-trash"></i> 删除用户
+                                    </button>
+                                </div>
+                            `;
+                            userItem.querySelector('h3').textContent=(user.member_number?'序号 '+user.member_number+' · ':'')+(user.name || userId);
+                            userItem.querySelector('.user-info p').textContent='账号：'+userId+' · '+(user.title || '')+(user.student_id?' · 学号：'+user.student_id:'')+(user.gender?' · 性别：'+user.gender:'');
+                            userList.appendChild(userItem);
+                        });
+                        
+                        // 重新绑定编辑按钮事件
+                        document.querySelectorAll('.edit-user-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const userId = this.closest('.user-item').dataset.user;
+                                openEditUser(userId);
+                            });
+                        });
+                        
+                        // 重新绑定删除按钮事件
+                        document.querySelectorAll('.delete-user-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const userId = this.closest('.user-item').dataset.user;
+                                deleteUser(userId);
+                            });
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('加载用户列表失败:', error);
+                    showNotification('错误', '加载用户列表失败');
+                });
+        }
+        
+        function openEditUser(userId) {
+            currentEditingUser = userId;
+            const user = users[userId];
+            
+            document.getElementById('admin-edit-member-number').textContent=(user.member_number?'序号 '+user.member_number+' · ':'')+'账号：'+userId;
+            // 填充基本信息表单
+            document.getElementById('admin-edit-name').value = user.name || '';
+            document.getElementById('admin-edit-student-id').value = user.student_id || '';
+            document.getElementById('admin-edit-gender').value=user.gender || '';
+            TitlePicker.set('admin-edit-title', user.title || '');
+            document.getElementById('admin-edit-organization').value = user.organization || '';
+            document.getElementById('admin-edit-major').value = user.major || '';
+            document.getElementById('admin-edit-email').value = user.email || '';
+            document.getElementById('admin-edit-phone').value = user.phone || '';
+            document.getElementById('admin-edit-wechat').value = user.wechat || '';
+            ContactUI.fill('admin-edit',user);
+            document.getElementById('admin-edit-github').value = user.github || '';
+            document.getElementById('admin-edit-feishu-link').value = user.feishu_link || '';
+            document.getElementById('admin-edit-quote').value = user.quote || '';
+            document.getElementById('admin-edit-bio').value = user.bio || '';
+            
+            // 复制图鉴数据到临时数组
+            tempBadges = JSON.parse(JSON.stringify(user.badges));
+            
+            // 显示编辑界面
+            document.getElementById('admin-section').classList.add('hidden');
+            document.getElementById('admin-edit-section').classList.remove('hidden');
+            
+            // 渲染图鉴列表
+            renderEditBadges();
+            GrowthUI.loadMemberMedals(userId);
+            showEditorStart('admin-edit-section');
+        }
+        
+        function renderEditBadges() {
+            const badgesList = document.getElementById('edit-badges-list');
+            badgesList.innerHTML = '';
+            
+            tempBadges.forEach((badge, index) => {
+                const badgeItem = document.createElement('div');
+                badgeItem.className = 'edit-badge-item';
+                badgeItem.innerHTML = `
+                    <div class="badge-edit-info">
+                        <h4></h4>
+                        <p></p>
+                    </div>
+                    <div class="badge-edit-actions">
+                        <button class="badge-action-btn ${badge.unlocked ? 'lock' : 'unlock'}" data-index="${index}">
+                            <i class="fas fa-${badge.unlocked ? 'lock' : 'unlock'}"></i>
+                            ${badge.unlocked ? '锁定' : '解锁'}
+                        </button>
+                        <button class="badge-action-btn delete" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                            删除
+                        </button>
+                    </div>
+                `;
+                badgeItem.querySelector('h4').textContent=badge.name;
+                badgeItem.querySelector('.badge-edit-info p').textContent=badge.date;
+                badgesList.appendChild(badgeItem);
+            });
+            
+            // 绑定图鉴操作按钮事件
+            document.querySelectorAll('.badge-action-btn.unlock').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    const today = new Date();
+                    const defaultDate = today.getFullYear() + '.' + String(today.getMonth() + 1).padStart(2, '0') + '.' + String(today.getDate()).padStart(2, '0');
+                    const inputDate = prompt('请输入获得图鉴的日期（格式：YYYY.MM.DD，留空使用今天）', defaultDate);
+                    if (inputDate === null) return; // 用户取消
+                    const dateStr = inputDate.trim() || defaultDate;
+                    // 简单校验格式
+                    if (!/^\d{4}\.\d{2}\.\d{2}$/.test(dateStr)) {
+                        showNotification('格式错误', '请输入正确的日期格式，如 2024.12.01');
+                        return;
+                    }
+                    tempBadges[index].unlocked = true;
+                    tempBadges[index].date = dateStr;
+                    renderEditBadges();
+                });
+            });
+            
+            document.querySelectorAll('.badge-action-btn.lock').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    tempBadges[index].unlocked = false;
+                    tempBadges[index].date = 'LOCKED';
+                    renderEditBadges();
+                });
+            });
+            
+            document.querySelectorAll('.badge-action-btn.delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    if (confirm('确定要删除这个图鉴吗？')) {
+                        tempBadges.splice(index, 1);
+                        renderEditBadges();
+                    }
+                });
+            });
+        }
+        
+        function showNewBadgeForm() {
+            const badgesList = document.getElementById('edit-badges-list');
+            const existingForm = badgesList.querySelector('.new-badge-form');
+            
+            if (existingForm) {
+                existingForm.remove();
+                return;
+            }
+            
+            const newBadgeForm = document.createElement('div');
+            newBadgeForm.className = 'new-badge-form';
+            newBadgeForm.innerHTML = `
+                <h4>添加新图鉴</h4>
+                <input type="text" id="new-badge-name" placeholder="图鉴名称">
+                <input type="text" id="new-badge-date" placeholder="日期 (如: 2024.12.01)">
+                <select id="new-badge-icon">
+                    <option value="cog">齿轮</option>
+                    <option value="bolt">闪电</option>
+                    <option value="wave-square">波形</option>
+                    <option value="code">代码</option>
+                    <option value="server">服务器</option>
+                    <option value="database">数据库</option>
+                    <option value="star">星星</option>
+                    <option value="trophy">奖杯</option>
+                    <option value="medal">奖章</option>
+                    <option value="certificate">证书</option>
+                </select>
+                <button id="confirm-add-badge">
+                    <i class="fas fa-check"></i> 确认添加
+                </button>
+                <button class="cancel-new-badge" id="cancel-add-badge">
+                    <i class="fas fa-times"></i> 取消
+                </button>
+            `;
+            
+            badgesList.insertBefore(newBadgeForm, badgesList.firstChild);
+            
+            // 绑定确认添加按钮事件
+            document.getElementById('confirm-add-badge').addEventListener('click', function() {
+                const name = document.getElementById('new-badge-name').value.trim();
+                const date = document.getElementById('new-badge-date').value.trim();
+                const icon = document.getElementById('new-badge-icon').value;
+                
+                if (!name) {
+                    showNotification('错误', '请输入图鉴名称');
+                    return;
+                }
+                
+                const newBadge = {
+                    name: name,
+                    date: date || new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+                    icon: icon,
+                    unlocked: true
+                };
+                
+                tempBadges.unshift(newBadge);
+                renderEditBadges();
+                showNotification('成功', '新图鉴已添加');
+            });
+            
+            // 绑定取消添加按钮事件
+            document.getElementById('cancel-add-badge').addEventListener('click', function() {
+                newBadgeForm.remove();
+            });
+        }
+        
+        function saveBadgesChanges() {
+            if (currentEditingUser && users[currentEditingUser]) {
+                // 收集基本信息
+                const updatedUser = Object.assign({}, users[currentEditingUser], {
+                    name: document.getElementById('admin-edit-name').value.trim() || users[currentEditingUser].name,
+                    student_id: document.getElementById('admin-edit-student-id').value.trim(),
+                    title: document.getElementById('admin-edit-title').value.trim(),
+                    gender: document.getElementById('admin-edit-gender').value,
+                    organization: document.getElementById('admin-edit-organization').value.trim(),
+                    major: document.getElementById('admin-edit-major').value.trim(),
+                    email: document.getElementById('admin-edit-email').value.trim(),
+                    phone: document.getElementById('admin-edit-phone').value.trim(),
+                    wechat: document.getElementById('admin-edit-wechat').value.trim(),
+                    wechat_qr:document.getElementById('admin-edit-wechat-qr').value,
+                    github: document.getElementById('admin-edit-github').value.trim(),
+                    feishu_link: document.getElementById('admin-edit-feishu-link').value.trim(),
+                    quote: document.getElementById('admin-edit-quote').value.trim(),
+                    bio: document.getElementById('admin-edit-bio').value.trim(),
+                    badges: JSON.parse(JSON.stringify(tempBadges))
+                });
+
+                // 同步到服务器
+                fetch(`/api/users/${currentEditingUser}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedUser)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 更新本地数据
+                        users[currentEditingUser] = data.user;
+                        users[currentEditingUser].badges = data.user.badges || updatedUser.badges;
+                        DataManager.saveData(users, loginCredentials);
+                        // 刷新用户列表显示
+                        loadUserList();
+                        showNotification('保存成功', '用户信息已更新');
+                        cancelEditUser();
+                    } else {
+                        showNotification('保存失败', data.message || '未知错误');
+                    }
+                })
+                .catch(error => {
+                    console.error('保存失败:', error);
+                    showNotification('网络错误', '保存失败，请重试');
+                });
+            }
+        }
+        
+        function cancelEditUser() {
+            currentEditingUser = null;
+            tempBadges = [];
+            document.getElementById('admin-edit-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.remove('hidden');
+        }
+        
+        function showAddUserForm() {
+            // 清空表单
+            document.getElementById('new-user-id').value = '';
+            document.getElementById('new-user-name').value = '';
+            const newStudentIdEl = document.getElementById('new-user-student-id');
+            if (newStudentIdEl) newStudentIdEl.value = '';
+            document.getElementById('new-user-gender').value='';
+            TitlePicker.set('new-user-title', '成员');
+            document.getElementById('new-user-organization').value = '';
+            document.getElementById('new-user-major').value = '';
+            document.getElementById('new-user-email').value = '';
+            document.getElementById('new-user-github').value = '';
+            document.getElementById('new-user-feishu-link').value = '';
+            document.getElementById('new-user-password').value = '';
+            document.getElementById('new-user-quote').value = '';
+            document.getElementById('new-user-bio').value = '';
+            document.getElementById('new-user-avatar').value = '';
+            
+            // 显示添加用户界面
+            document.getElementById('admin-section').classList.add('hidden');
+            document.getElementById('add-user-section').classList.remove('hidden');
+            showEditorStart('add-user-section');
+        }
+        
+        function saveNewUser() {
+            const userId = document.getElementById('new-user-id').value.trim();
+            const name = document.getElementById('new-user-name').value.trim();
+            const studentIdEl = document.getElementById('new-user-student-id');
+            const student_id = studentIdEl ? studentIdEl.value.trim() : '';
+            const title = document.getElementById('new-user-title').value.trim();
+            const organization = document.getElementById('new-user-organization').value.trim();
+            const major = document.getElementById('new-user-major').value.trim();
+            const email = document.getElementById('new-user-email').value.trim();
+            const github = document.getElementById('new-user-github').value.trim();
+            const feishu_link = document.getElementById('new-user-feishu-link').value.trim();
+            const password = document.getElementById('new-user-password').value.trim();
+            const quote = document.getElementById('new-user-quote').value.trim();
+            const bio = document.getElementById('new-user-bio').value.trim();
+            const avatar = document.getElementById('new-user-avatar').value.trim();
+            
+            // 验证必填字段
+            if (!userId || !name || !password) {
+                showNotification('错误', '请填写用户ID、姓名和密码');
+                return;
+            }
+            
+            // 检查用户ID是否已存在
+            if (users[userId]) {
+                showNotification('错误', '该用户ID已存在');
+                return;
+            }
+            
+            // 发送请求到服务器
+            fetch('/api/admin/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId,
+                    name,
+                    gender:document.getElementById('new-user-gender').value,
+                    student_id,
+                    title,
+                    organization,
+                    major,
+                    email,
+                    github,
+                    feishu_link,
+                    password,
+                    quote,
+                    bio,
+                    avatar
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('成功', '新用户已添加');
+                    cancelAddUser();
+                    loadUserList();
+                } else {
+                    showNotification('错误', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('添加用户失败:', error);
+                showNotification('错误', '添加用户失败');
+            });
+        }
+        
+        function cancelAddUser() {
+            document.getElementById('add-user-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.remove('hidden');
+        }
+        
+        function deleteUser(userId) {
+            if (userId === 'admin') {
+                showNotification('错误', '无法删除管理员账户');
+                return;
+            }
+            
+            if (confirm(`确定要删除用户 "${users[userId].name}" 吗？此操作不可恢复。`)) {
+                // 发送请求到服务器
+                fetch(`/api/admin/users/${userId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('成功', '用户已删除');
+                        loadUserList();
+                    } else {
+                        showNotification('错误', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('删除用户失败:', error);
+                    showNotification('错误', '删除用户失败');
+                });
+            }
+        }
+        
+        // ===== 全局图鉴管理 =====
+        function showBadgeManageSection() {
+            document.getElementById('admin-section').classList.add('hidden');
+            document.getElementById('badge-manage-section').classList.remove('hidden');
+            loadGlobalBadges();
+        }
+        
+        function loadGlobalBadges() { return GrowthUI.loadBadgeEditor(document.getElementById('global-badges-list')); }
+
+        function showAddGlobalBadgeForm() { GrowthUI.editBadge(); }
+
+        function deleteGlobalBadge(encodedBadgeName) {
+            fetch(`/api/admin/badges/${encodedBadgeName}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('成功', data.message);
+                    loadGlobalBadges();
+                } else {
+                    showNotification('错误', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('删除图鉴失败:', error);
+                showNotification('错误', '删除失败');
+            });
+        }
+        
+        // 显示导入数据表单
+        function showImportDataForm() {
+            const importForm = document.createElement('div');
+            importForm.className = 'import-form-overlay';
+            importForm.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+            `;
+            
+            importForm.innerHTML = `
+                <div class="import-form" style="
+                    background-color: #0a192f;
+                    padding: 30px;
+                    border-radius: 10px;
+                    width: 90%;
+                    max-width: 500px;
+                    border: 1px solid #10b981;
+                ">
+                    <h2 style="color: #10b981; margin-bottom: 20px; text-align: center;">
+                        <i class="fas fa-upload"></i> 导入数据
+                    </h2>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label style="color: #8892b0; display: block; margin-bottom: 5px;">选择JSON文件</label>
+                        <input type="file" id="import-file" accept=".json" style="
+                            width: 100%;
+                            padding: 10px;
+                            background-color: rgba(136, 146, 176, 0.1);
+                            border: 1px solid rgba(136, 146, 176, 0.3);
+                            border-radius: 5px;
+                            color: #8892b0;
+                        ">
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button id="confirm-import" style="
+                            flex: 1;
+                            padding: 10px;
+                            background-color: rgba(16, 185, 129, 0.2);
+                            border: 1px solid rgba(16, 185, 129, 0.4);
+                            border-radius: 5px;
+                            color: #10b981;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        ">
+                            <i class="fas fa-check"></i> 确认导入
+                        </button>
+                        <button id="cancel-import" style="
+                            flex: 1;
+                            padding: 10px;
+                            background-color: rgba(136, 146, 176, 0.2);
+                            border: 1px solid rgba(136, 146, 176, 0.4);
+                            border-radius: 5px;
+                            color: #8892b0;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        ">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(importForm);
+            
+            // 确认导入按钮点击事件
+            document.getElementById('confirm-import').addEventListener('click', function() {
+                const fileInput = document.getElementById('import-file');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    showNotification('错误', '请选择要导入的文件');
+                    return;
+                }
+                
+                DataManager.importData(file, function(success, message) {
+                    if (success) {
+                        showNotification('成功', message);
+                        loadUserList();
+                        importForm.remove();
+                    } else {
+                        showNotification('错误', message);
+                    }
+                });
+            });
+            
+            // 取消按钮点击事件
+            document.getElementById('cancel-import').addEventListener('click', function() {
+                importForm.remove();
+            });
+        }
+        
+        // 显示CSV导入表单
+        function showImportCSVForm() {
+            MemberImportUI.open();
+        }
+        
+        // 处理CSV导入
+        function processCSVImport(csvContent, formElement) {
+            const lines = csvContent.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
+            const usersList = [];
+            const errors = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(v => v.trim());
+                if (values.length < 2) {
+                    errors.push(`第${i + 1}行数据不完整`);
+                    continue;
+                }
+                
+                usersList.push({
+                    id: 'user' + (Date.now()) + '_' + i,
+                    name: values[0] || '未命名',
+                    title: values[1] || '未设置职位',
+                    organization: values[2] || '深圳大学医工融合卓越工程师协会',
+                    major: values[3] || '',
+                    email: values[4] || '',
+                    phone: values[5] || '',
+                    wechat: values[6] || '',
+                    github: values[7] || '',
+                    quote: values[8] || '暂无个人格言',
+                    bio: values[9] || '暂无个人简介',
+                    avatar: values[10] || '',
+                    password: '123456'
+                });
+            }
+            
+            if (usersList.length === 0) {
+                showNotification('错误', '没有有效的用户数据');
+                return;
+            }
+            
+            // 调用后端批量导入接口
+            fetch('/api/admin/import-users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ users: usersList })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('导入成功', data.message);
+                    loadUserList();
+                    formElement.remove();
+                }
+                if (data.errors && data.errors.length > 0) {
+                    showNotification('导入警告', '部分失败: ' + data.errors.join('; '));
+                }
+            })
+            .catch(error => {
+                console.error('CSV导入失败:', error);
+                showNotification('错误', '导入失败，请稍后重试');
+            });
+        }
+    </script>
+</body>
+</html>

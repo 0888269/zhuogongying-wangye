@@ -1,0 +1,18 @@
+{
+  "restore": {
+    "paintReadyMs": 1068,
+    "longTasks": [
+      {
+        "start": 167,
+        "duration": 852
+      }
+    ],
+    "viewerLoaded": false
+  },
+  "expand": {
+    "paintReadyMs": 3629,
+    "count": 55,
+    "longTasks": [],
+    "viewerLoaded": false
+  }
+}

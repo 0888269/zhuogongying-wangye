@@ -1,0 +1,24 @@
+{
+  "name": "nfc-web",
+  "version": "1.0.0",
+  "description": "NFC Web Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test tests/*.test.js",
+    "build:badges": "node tools/build-badges.cjs",
+    "build:medal-assets": "node tools/render-medal-assets.cjs"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "mysql2": "^3.21.0",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "esbuild": "^0.28.2"
+  }
+}

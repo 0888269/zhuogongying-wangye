@@ -1,0 +1,6 @@
+node_modules/
+.protocol/
+*.log
+.env
+config.json
+state.json

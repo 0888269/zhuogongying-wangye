@@ -1,0 +1,29 @@
+.contact-tools{background:white;border:1px solid #e2e1ee;border-radius:20px;padding:24px;margin:20px 0}.contact-tools h2{margin:0 0 16px}.contact-actions{display:flex;flex-wrap:wrap;gap:10px}.contact-button{flex:1 1 150px;text-align:center;min-height:46px;padding:12px 16px;border:1px solid #5f579b;border-radius:12px;background:#5f579b;color:#fff;text-decoration:none;font:inherit;font-weight:600;cursor:pointer}.contact-button.secondary{background:#f7f6fc;color:#514a83;border-color:#ddd9ed}.contact-button.wechat{background:#277e60;border-color:#277e60}.contact-tools details{margin-top:18px;font-size:14px;line-height:1.7}.contact-tools summary{cursor:pointer;color:#655c92}.contact-dialog{width:min(92vw,460px);max-height:88vh;overflow:auto;border:0;border-radius:20px;padding:24px;color:#2d2944}.contact-dialog::backdrop{background:#24203688}.contact-dialog input{width:100%;padding:12px;font:inherit;border:1px solid #d5d1e7;border-radius:8px;user-select:text;margin-bottom:12px}.contact-dialog button,.contact-dialog a{display:block;padding:12px;font:inherit;margin:10px 0}.wechat-qr{display:block;width:min(100%,280px);height:auto;margin:16px auto;object-fit:contain}.contact-dialog p{line-height:1.6}.contact-tools [hidden],.wechat-qr[hidden]{display:none}
+
+.contact-has-dock{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}.contact-dock{position:fixed;z-index:100;left:50%;transform:translateX(-50%);bottom:0;width:min(100%,760px);padding:8px 16px calc(12px + env(safe-area-inset-bottom,0px));background:#fffffff5;border-top:1px solid #dedbea;box-shadow:0 -6px 24px #27204212;backdrop-filter:blur(12px)}.contact-dock-name{display:block;text-align:center;font-size:12px;color:#6a6284;margin-bottom:5px}.contact-dock .contact-button{flex:1 1 0;min-width:0}.contact-dialog .contact-button{color:#fff;text-decoration:none;text-align:center}.optional-wechat-qr{margin:16px 0}.optional-wechat-qr summary{cursor:pointer}.contact-dialog{padding-bottom:max(24px,env(safe-area-inset-bottom,0px))}
+
+/* Global page resets clear dialog margins: explicitly center every contact dialog. */
+.contact-dialog{position:fixed;inset:0;margin:auto;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overscroll-behavior:contain;box-sizing:border-box}
+
+/* Keep the profile ending in one quiet, full-width stack rather than grid cards. */
+.public-page .profile-resources{grid-column:1/-1;min-width:0;background:#f9f9fc;border:1px solid #dedee8;border-radius:12px;overflow:hidden;margin-top:8px}
+.public-page .profile-resources .public-route-details{padding:0;background:transparent;border:0;border-radius:0}
+.public-page .profile-resources .public-route-details>summary{padding:18px 20px;font-size:14px;font-weight:600;color:#45415f;min-height:56px}
+.public-page .profile-resources .public-route-details[open]>summary{margin-bottom:0;border-bottom:1px solid #e6e5ee}
+.public-page .profile-resources #public-growth-route{padding:18px;min-width:0}
+.public-page .profile-resources #public-contact-tools{padding:0;margin:0;border:0;border-radius:0;background:transparent;border-top:1px solid #e6e5ee}
+.public-page .profile-resources #public-contact-tools>details{margin:0;padding:0}
+.public-page .profile-resources #public-contact-tools>details>summary{padding:18px 20px;min-height:56px;list-style:none;color:#45415f;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.public-page .profile-resources #public-contact-tools>details>summary::after{content:'＋';font-weight:400}
+.public-page .profile-resources #public-contact-tools>details[open]>summary::after{content:'−'}
+.public-page .profile-resources #public-contact-tools>details>p{padding:0 20px 12px;color:#757085;font-size:13px;line-height:1.8}
+.public-page .profile-resources #public-contact-tools>p{padding:0 20px 16px;color:#888294;font-size:12px}
+.public-page .profile-resources #public-collaboration{border:0;border-top:1px solid #e6e5ee;border-radius:0;margin:0;padding:18px 20px;background:transparent}
+.public-page .profile-resources #public-collaboration:empty{display:none}
+.public-page .profile-resources #public-collaboration h2{font-size:14px;color:#45415f;margin:0 0 10px}
+.public-page .profile-resources #public-collaboration .contact-button{flex:none;min-height:38px;padding:8px 12px;border-radius:7px;font-size:13px;background:#eeedf5;border-color:transparent;color:#62567e}
+.public-page .profile-resources #public-collaboration p{font-size:12px;color:#898393;margin:10px 0 0;line-height:1.7}
+.public-page .footer{padding:22px 12px 12px;margin-top:10px;font-size:12px;line-height:1.9;color:#898393;background:transparent;border:0;box-shadow:none}
+.public-page .footer a{font-size:12px;color:#787087;text-decoration:none}
+.contact-dock{border-radius:14px 14px 0 0;box-shadow:0 -3px 20px #2720420c}
+@media(max-width:720px){.account-page .contact-dock{bottom:calc(72px + env(safe-area-inset-bottom,0px));padding-bottom:10px;border-radius:0;max-width:100%}.account-page.contact-has-dock #card-section{padding-bottom:96px}.public-page .profile-resources{margin-top:2px}.public-page .profile-resources #public-growth-route{padding:12px}.public-page .profile-resources .public-route-details>summary,.public-page .profile-resources #public-contact-tools>details>summary{padding:16px;min-height:52px}.public-page .profile-resources #public-collaboration{padding:16px}}
